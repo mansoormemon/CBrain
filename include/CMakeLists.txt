@@ -1,5 +1,6 @@
 set(INCLUDES
     "CBrain/CBrain.h"
+    "CBrain/Image.h"
     "CBrain/Types.h"
     "CBrain/Version.h")
 

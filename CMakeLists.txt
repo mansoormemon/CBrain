@@ -36,6 +36,9 @@ set(CBRAIN "cbrain")
 set(CBRAIN_DIR "CBrain")
 
 add_subdirectory("include")
+add_subdirectory("src")
+add_subdirectory("examples")
+add_subdirectory("external")
 
 message("
 --------------------------------

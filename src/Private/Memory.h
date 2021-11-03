@@ -1,5 +1,4 @@
 // Copyright 2021 CBrain
-// Project URL: https://github.com/mansoormemon/CBrain
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,16 +14,34 @@
 
 // Copyright (c) 2021 Mansoor Memon <mansoorahmed.one@gmail.com>
 
-#ifndef CBRAIN__CBRAIN_H_
-#define CBRAIN__CBRAIN_H_
+#ifndef CBRAIN__PRIVATE__MEMORY_H_
+#define CBRAIN__PRIVATE__MEMORY_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "Image.h"
-#include "Types.h"
-#include "Version.h"
+#include <stdlib.h>
+
+#include "CBrain/Types.h"
+
+static bool reallocateMemory__(void **tgtPtr, u64 size) {
+  if (tgtPtr == nil) { return false; }
+
+  void *tempPtr = realloc(*tgtPtr, size);
+  if (tempPtr == nil) { return false; }
+
+  *tgtPtr = tempPtr;
+
+  return true;
+}
+
+static void freeMemory__(void **tgtPtr) {
+  if (tgtPtr != nil) {
+    free(*tgtPtr);
+    *tgtPtr = nil;
+  }
+}
 
 #ifdef __cplusplus
 }

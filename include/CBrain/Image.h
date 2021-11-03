@@ -15,16 +15,31 @@
 
 // Copyright (c) 2021 Mansoor Memon <mansoorahmed.one@gmail.com>
 
-#ifndef CBRAIN__CBRAIN_H_
-#define CBRAIN__CBRAIN_H_
+#ifndef CBRAIN__IMAGE_H_
+#define CBRAIN__IMAGE_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "Image.h"
 #include "Types.h"
-#include "Version.h"
+
+typedef struct CBImage {
+  i32 width;
+  i32 height;
+  i32 channels;
+  u8 *data;
+} CBImage;
+
+CBImage *CBImageNew();
+
+CBImage *CBImageNullify(CBImage *img);
+void CBImageDelete(CBImage **imgRef);
+
+CBImage *CBImageRead(const char *pathToImg);
+CBImage *CBImageReadInto(CBImage *img, const char *pathToImg);
+
+bool CBImageWrite(CBImage *img, const char *pathToImg);
 
 #ifdef __cplusplus
 }
