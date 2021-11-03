@@ -1,0 +1,12 @@
+# Ignore build files.
+**/*[Bb][Uu][Ii][Ll][Dd]*
+
+# Ignore CMake files.
+CMakeCache.txt
+CMakeFiles
+
+# Ignore VS Code config files.
+**/.vscode
+
+# Ignore Intellij IDE config files.
+**/.idea
