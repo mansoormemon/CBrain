@@ -36,10 +36,20 @@ CBImage *CBImageNew();
 CBImage *CBImageNullify(CBImage *img);
 void CBImageDelete(CBImage **imgRef);
 
+CBImage *CBImageFrom(i32 width, i32 height, i32 channels);
+CBImage *CBImageFromInto(CBImage *img, i32 width, i32 height, i32 channels);
+
+CBImage *CBImageClone(CBImage *src);
+CBImage *CBImageCloneInto(CBImage *dest, CBImage *src);
+
 CBImage *CBImageRead(const char *pathToImg);
 CBImage *CBImageReadInto(CBImage *img, const char *pathToImg);
 
 bool CBImageWrite(CBImage *img, const char *pathToImg);
+
+u8 *CBImagePixelAt(CBImage *img, i32 y, i32 x);
+u8 CBImageGetValueAt(CBImage *img, i32 y, i32 x, i32 chan);
+void CBImageSetValueAt(CBImage *img, i32 y, i32 x, i32 chan, u8 val);
 
 #ifdef __cplusplus
 }

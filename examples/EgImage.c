@@ -38,17 +38,21 @@ int main(int argc, char *argv[]) {
 
   printf("Read successful!\n");
 
-  printf("Width: %d\n"
-         "Height: %d\n"
-         "Channels: %d\n",
-         img->width, img->height, img->channels);
+  CBImage *clone = CBImageClone(img);
 
-  if (CBImageWrite(img, out)) {
+  printf(
+      "Width: %d\n"
+      "Height: %d\n"
+      "Channels: %d\n",
+      clone->width, clone->height, clone->channels);
+
+  if (CBImageWrite(clone, out)) {
     printf("Write successful: %s\n", out);
   } else {
     printf("Unable to write file: %s\n", out);
   }
 
   CBImageDelete(&img);
+  CBImageDelete(&clone);
   return 0;
 }

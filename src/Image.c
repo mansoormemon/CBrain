@@ -16,6 +16,8 @@
 #endif
 #include "stb/stb_image_write.h"
 
+#include <string.h>
+
 #define IMG_QUALITY 100
 
 CBImage *CBImageNew() {
@@ -51,6 +53,66 @@ void CBImageDelete(CBImage **imgRef) {
     CBImageNullify(*imgRef);
     freeMemory__(CastTo(imgRef, void *));
   }
+}
+
+CBImage *CBImageFrom(i32 width, i32 height, i32 channels) {
+  if (width <= 0 || height <= 0 || channels <= 0) { return nil; }
+
+  CBImage *img = CBImageNew();
+
+  if (CBImageFromInto(img, width, height, channels) == nil) {
+    CBImageDelete(&img);
+    return nil;
+  }
+
+  return img;
+}
+
+CBImage *CBImageFromInto(CBImage *img, i32 width, i32 height, i32 channels) {
+  if (img == nil || width <= 0 || height <= 0 || channels <= 0) { return nil; }
+
+  i32 newBufSize = width * height * channels;
+  if (!reallocateMemory__(CastTo(&img->data, void *), newBufSize)) {
+    return nil;
+  }
+
+  img->width = width;
+  img->height = height;
+  img->channels = channels;
+
+  memset(img->data, 0, newBufSize);
+
+  return img;
+}
+
+CBImage *CBImageClone(CBImage *src) {
+  if (src == nil) { return nil; }
+
+  CBImage *img = CBImageNew();
+
+  if (CBImageCloneInto(img, src) == nil) {
+    CBImageDelete(&img);
+    return nil;
+  }
+
+  return img;
+}
+
+CBImage *CBImageCloneInto(CBImage *dest, CBImage *src) {
+  if (dest == nil || src == nil || dest == src) { return nil; }
+
+  i32 bufSize = src->width * src->height * src->channels;
+  if (!reallocateMemory__(CastTo(&dest->data, void *), bufSize)) {
+    return nil;
+  }
+
+  dest->width = src->width;
+  dest->height = src->height;
+  dest->channels = src->channels;
+
+  memcpy(dest->data, src->data, bufSize);
+
+  return dest;
 }
 
 CBImage *CBImageRead(const char *pathToImg) {
@@ -93,4 +155,32 @@ bool CBImageWrite(CBImage *img, const char *pathToImg) {
                               IMG_QUALITY);
 
   return retVal;
+}
+
+u8 *CBImagePixelAt(CBImage *img, i32 y, i32 x) {
+  if (img == nil || y < 0 || x < 0) { return nil; }
+
+  if (img->data == nil || y >= img->height || x >= img->width) { return nil; }
+
+  i32 i = (x * img->channels) + (y * img->width * img->channels);
+
+  return img->data + i;
+}
+
+u8 CBImageGetValueAt(CBImage *img, i32 y, i32 x, i32 chan) {
+  u8 *pix = CBImagePixelAt(img, y, x);
+
+  assert(pix != nil);
+  assert(chan < img->channels);
+
+  return pix[chan];
+}
+
+void CBImageSetValueAt(CBImage *img, i32 y, i32 x, i32 chan, u8 val) {
+  u8 *pix = CBImagePixelAt(img, y, x);
+
+  assert(pix != nil);
+  assert(chan < img->channels);
+
+  pix[chan] = val;
 }
