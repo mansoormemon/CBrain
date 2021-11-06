@@ -67,13 +67,17 @@ CBImage *CBImageRead(const char *pathToImg) {
 CBImage *CBImageReadInto(CBImage *img, const char *pathToImg) {
   if (img == nil) { return nil; }
 
-  u8 *temp = stbi_load(pathToImg, &img->width, &img->height, &img->channels, 0);
+  i32 width = 0, height = 0, channels = 0;
+  u8 *tempPtr = stbi_load(pathToImg, &width, &height, &channels, 0);
 
-  if (temp == nil) { return nil; }
+  if (tempPtr == nil) { return nil; }
 
-  if (img->data != nil) { stbi_image_free(img->data); }
+  CBImageNullify(img);
 
-  img->data = temp;
+  img->width = width;
+  img->height = height;
+  img->channels = channels;
+  img->data = tempPtr;
 
   return img;
 }
