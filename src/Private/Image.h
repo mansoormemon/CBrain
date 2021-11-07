@@ -14,17 +14,17 @@
 
 // Copyright (c) 2021 Mansoor Memon <mansoorahmed.one@gmail.com>
 
-#ifndef CBRAIN__PRIVATE__MEMORY_H_
-#define CBRAIN__PRIVATE__MEMORY_H_
+#ifndef CBRAIN__PRIVATE__IMAGE_H_
+#define CBRAIN__PRIVATE__IMAGE_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#include "CBrain/Image.h"
 #include "CBrain/Types.h"
 
-bool CBreallocateMemory__(void **tgtPtr, u64 size);
-void CBfreeMemory__(void **tgtPtr);
+bool CBsetMetaInfoImage__(CBImage *img, i32 width, i32 height, i32 channels);
 
 #ifdef __cplusplus
 }

@@ -50,9 +50,16 @@ CBImage *CBImageReadInto(CBImage *img, const char *pathToImg);
 
 bool CBImageWrite(CBImage *img, const char *pathToImg);
 
-u8 *CBImagePixelAt(CBImage *img, i32 y, i32 x);
-u8 CBImageGetValueAt(CBImage *img, i32 y, i32 x, i32 chan);
-void CBImageSetValueAt(CBImage *img, i32 y, i32 x, i32 chan, u8 val);
+u8 *CBImageGetPixAt(CBImage *img, i32 y, i32 x);
+void CBImageSetPixAt(CBImage *img, i32 y, i32 x, ...);
+
+u8 CBImageGetPixChanAt(CBImage *img, i32 y, i32 x, i32 chan);
+void CBImageSetPixChanAt(CBImage *img, i32 y, i32 x, i32 chan, u8 val);
+
+u8 *CBImageLinearAt(CBImage *img, i32 index);
+
+i32 CBImagePixCount(CBImage *img);
+i32 CBImageBufferSize(CBImage *img);
 
 #ifdef __cplusplus
 }

@@ -1,4 +1,5 @@
-set(EXAMPLES "EgImage.c")
+set(EXAMPLES
+    "EgImage.c")
 
 foreach(EXAMPLE ${EXAMPLES})
     get_filename_component(EX_TARGET "${EXAMPLE}" NAME_WE)

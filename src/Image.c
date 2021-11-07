@@ -1,5 +1,6 @@
 #include "CBrain/Image.h"
 
+#include "Private/Image.h"
 #include "Private/Memory.h"
 
 #define STBI_ONLY_JPEG
@@ -16,20 +17,22 @@
 #endif
 #include "stb/stb_image_write.h"
 
+#include <assert.h>
+#include <stdarg.h>
 #include <string.h>
 
-#define IMG_QUALITY 100
+#ifndef CB_JPEG_IMG_QUALITY
+#define CB_JPEG_IMG_QUALITY 96
+#endif
 
 CBImage *CBImageNew() {
   CBImage *img = nil;
 
-  if (!reallocateMemory__(CastTo(&img, void *), sizeof(CBImage))) {
+  if (!CBreallocateMemory__(CastTo(&img, void *), sizeof(CBImage))) {
     return nil;
   }
 
-  img->width = 0;
-  img->height = 0;
-  img->channels = 0;
+  CBsetMetaInfoImage__(img, 0, 0, 0);
   img->data = nil;
 
   return img;
@@ -40,9 +43,7 @@ CBImage *CBImageNullify(CBImage *img) {
 
   stbi_image_free(img->data);
 
-  img->width = 0;
-  img->height = 0;
-  img->channels = 0;
+  CBsetMetaInfoImage__(img, 0, 0, 0);
   img->data = nil;
 
   return img;
@@ -51,7 +52,7 @@ CBImage *CBImageNullify(CBImage *img) {
 void CBImageDelete(CBImage **imgRef) {
   if (imgRef != nil) {
     CBImageNullify(*imgRef);
-    freeMemory__(CastTo(imgRef, void *));
+    CBfreeMemory__(CastTo(imgRef, void *));
   }
 }
 
@@ -72,13 +73,11 @@ CBImage *CBImageFromInto(CBImage *img, i32 width, i32 height, i32 channels) {
   if (img == nil || width <= 0 || height <= 0 || channels <= 0) { return nil; }
 
   i32 newBufSize = width * height * channels;
-  if (!reallocateMemory__(CastTo(&img->data, void *), newBufSize)) {
+  if (!CBreallocateMemory__(CastTo(&img->data, void *), newBufSize)) {
     return nil;
   }
 
-  img->width = width;
-  img->height = height;
-  img->channels = channels;
+  CBsetMetaInfoImage__(img, width, height, channels);
 
   memset(img->data, 0, newBufSize);
 
@@ -101,14 +100,12 @@ CBImage *CBImageClone(CBImage *src) {
 CBImage *CBImageCloneInto(CBImage *dest, CBImage *src) {
   if (dest == nil || src == nil || dest == src) { return nil; }
 
-  i32 bufSize = src->width * src->height * src->channels;
-  if (!reallocateMemory__(CastTo(&dest->data, void *), bufSize)) {
+  i32 bufSize = CBImageBufferSize(src);
+  if (!CBreallocateMemory__(CastTo(&dest->data, void *), bufSize)) {
     return nil;
   }
 
-  dest->width = src->width;
-  dest->height = src->height;
-  dest->channels = src->channels;
+  CBsetMetaInfoImage__(dest, src->width, src->height, src->channels);
 
   memcpy(dest->data, src->data, bufSize);
 
@@ -142,7 +139,7 @@ CBImage *CBImageSubImageInto(CBImage *dest, CBImage *src, i32 startY, i32 startX
   i32 destBufSize = destWidth * destHeight * destChannels;
 
   u8 *tempBuf = nil;
-  if (!reallocateMemory__(CastTo(&tempBuf, void *), destBufSize)) {
+  if (!CBreallocateMemory__(CastTo(&tempBuf, void *), destBufSize)) {
     return nil;
   }
 
@@ -155,9 +152,9 @@ CBImage *CBImageSubImageInto(CBImage *dest, CBImage *src, i32 startY, i32 startX
   }
 
   CBImageNullify(dest);
-  dest->width = destWidth;
-  dest->height = destHeight;
-  dest->channels = destChannels;
+
+  CBsetMetaInfoImage__(dest, destWidth, destHeight, destChannels);
+
   dest->data = tempBuf;
 
   return dest;
@@ -184,9 +181,8 @@ CBImage *CBImageReadInto(CBImage *img, const char *pathToImg) {
 
   CBImageNullify(img);
 
-  img->width = width;
-  img->height = height;
-  img->channels = channels;
+  CBsetMetaInfoImage__(img, width, height, channels);
+
   img->data = tempPtr;
 
   return img;
@@ -200,12 +196,12 @@ bool CBImageWrite(CBImage *img, const char *pathToImg) {
                               img->height,
                               img->channels,
                               img->data,
-                              IMG_QUALITY);
+                              CB_JPEG_IMG_QUALITY);
 
   return retVal;
 }
 
-u8 *CBImagePixelAt(CBImage *img, i32 y, i32 x) {
+u8 *CBImageGetPixAt(CBImage *img, i32 y, i32 x) {
   if (img == nil || y < 0 || x < 0) { return nil; }
 
   if (img->data == nil || y >= img->height || x >= img->width) { return nil; }
@@ -215,8 +211,22 @@ u8 *CBImagePixelAt(CBImage *img, i32 y, i32 x) {
   return img->data + i;
 }
 
-u8 CBImageGetValueAt(CBImage *img, i32 y, i32 x, i32 chan) {
-  u8 *pix = CBImagePixelAt(img, y, x);
+void CBImageSetPixAt(CBImage *img, i32 y, i32 x, ...) {
+  u8 *pix = CBImageGetPixAt(img, y, x);
+  assert(pix != nil);
+
+  va_list args = {};
+  va_start(args, x);
+  i32 i = 0;
+  while (i < img->channels) {
+    pix[i] = CastTo(va_arg(args, i32), u8);
+    i += 1;
+  }
+  va_end(args);
+}
+
+u8 CBImageGetPixChanAt(CBImage *img, i32 y, i32 x, i32 chan) {
+  u8 *pix = CBImageGetPixAt(img, y, x);
 
   assert(pix != nil);
   assert(chan < img->channels);
@@ -224,11 +234,32 @@ u8 CBImageGetValueAt(CBImage *img, i32 y, i32 x, i32 chan) {
   return pix[chan];
 }
 
-void CBImageSetValueAt(CBImage *img, i32 y, i32 x, i32 chan, u8 val) {
-  u8 *pix = CBImagePixelAt(img, y, x);
+void CBImageSetPixChanAt(CBImage *img, i32 y, i32 x, i32 chan, u8 val) {
+  u8 *pix = CBImageGetPixAt(img, y, x);
 
   assert(pix != nil);
   assert(chan < img->channels);
 
   pix[chan] = val;
+}
+
+u8 *CBImageLinearAt(CBImage *img, i32 index) {
+  if (img == nil || index < 0) { return nil; }
+
+  i32 bufSize = CBImageBufferSize(img);
+  if (index >= bufSize) { return nil; }
+
+  return img->data + index;
+}
+
+i32 CBImagePixCount(CBImage *img) {
+  if (img == nil) { return -1; }
+
+  return img->width * img->height;
+}
+
+i32 CBImageBufferSize(CBImage *img) {
+  if (img == nil) { return -1; }
+
+  return img->width * img->height * img->channels;
 }
