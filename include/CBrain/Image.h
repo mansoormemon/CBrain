@@ -42,6 +42,9 @@ CBImage *CBImageFromInto(CBImage *img, i32 width, i32 height, i32 channels);
 CBImage *CBImageClone(CBImage *src);
 CBImage *CBImageCloneInto(CBImage *dest, CBImage *src);
 
+CBImage *CBImageSubImage(CBImage *src, i32 startY, i32 startX, i32 width, i32 height);
+CBImage *CBImageSubImageInto(CBImage *dest, CBImage *src, i32 startY, i32 startX, i32 width, i32 height);
+
 CBImage *CBImageRead(const char *pathToImg);
 CBImage *CBImageReadInto(CBImage *img, const char *pathToImg);
 

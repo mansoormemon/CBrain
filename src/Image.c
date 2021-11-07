@@ -115,6 +115,54 @@ CBImage *CBImageCloneInto(CBImage *dest, CBImage *src) {
   return dest;
 }
 
+CBImage *CBImageSubImage(CBImage *src, i32 startY, i32 startX, i32 width, i32 height) {
+  if (src == nil || startY < 0 || startX < 0 || width <= 0 || height <= 0) {
+    return nil;
+  }
+
+  CBImage *dest = CBImageNew();
+
+  if (CBImageSubImageInto(dest, src, startY, startX, width, height) == nil) {
+    CBImageDelete(&dest);
+    return nil;
+  }
+
+  return dest;
+}
+
+CBImage *CBImageSubImageInto(CBImage *dest, CBImage *src, i32 startY, i32 startX, i32 width, i32 height) {
+  if (dest == nil || src == nil || startY < 0 || startX < 0 || width <= 0 || height <= 0) {
+    return nil;
+  }
+
+  i32 endY = startY + height, endX = startX + width;
+  if (endY > src->height || endX > src->width) { return nil; }
+
+  i32 destWidth = endX - startX, destHeight = endY - startY, destChannels = src->channels;
+  i32 destBufSize = destWidth * destHeight * destChannels;
+
+  u8 *tempBuf = nil;
+  if (!reallocateMemory__(CastTo(&tempBuf, void *), destBufSize)) {
+    return nil;
+  }
+
+  i32 i = 0, y = startY;
+  while (y < endY) {
+    i32 srcIndex = (y * src->width * src->channels) + (startX * src->channels);
+    i32 destIndex = i * destWidth * destChannels;
+    memcpy(tempBuf + destIndex, src->data + srcIndex, destWidth * destChannels);
+    i += 1, y += 1;
+  }
+
+  CBImageNullify(dest);
+  dest->width = destWidth;
+  dest->height = destHeight;
+  dest->channels = destChannels;
+  dest->data = tempBuf;
+
+  return dest;
+}
+
 CBImage *CBImageRead(const char *pathToImg) {
   CBImage *img = CBImageNew();
 

@@ -38,21 +38,25 @@ int main(int argc, char *argv[]) {
 
   printf("Read successful!\n");
 
-  CBImage *clone = CBImageClone(img);
+  printf("Width: %d, Height: %d, Channels: %d\n", img->width, img->height, img->channels);
 
-  printf(
-      "Width: %d\n"
-      "Height: %d\n"
-      "Channels: %d\n",
-      clone->width, clone->height, clone->channels);
+  printf("Extracting sub-image...\n");
+  CBImage *sub = CBImageSubImage(img, 24, 24, 72, 96);
 
-  if (CBImageWrite(clone, out)) {
+  if (sub == nil) {
+    printf("Error: Failed to extract sub-image!\n");
+    return -1;
+  }
+
+  printf("New dimensions => Width: %d, Height: %d, Channels: %d\n", sub->width, sub->height, sub->channels);
+
+  if (CBImageWrite(sub, out)) {
     printf("Write successful: %s\n", out);
   } else {
     printf("Unable to write file: %s\n", out);
   }
 
   CBImageDelete(&img);
-  CBImageDelete(&clone);
+  CBImageDelete(&sub);
   return 0;
 }
