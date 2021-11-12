@@ -24,7 +24,10 @@ extern "C" {
 #include "CBrain/Image.h"
 #include "CBrain/Types.h"
 
-bool CBsetMetaInfoImage__(CBImage *img, i32 width, i32 height, i32 channels);
+bool CBSetMetaInfo_Image(CBImage *img, i32 width, i32 height, i32 channels);
+bool CBSet_Image(CBImage *img, i32 width, i32 height, i32 channels, u8 *data);
+
+CBImage *CBNullify_Image(CBImage *img);
 
 #ifdef __cplusplus
 }

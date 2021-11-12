@@ -1,5 +1,7 @@
 #include "CBrain/Algorithm.h"
 
+#include "CBrain/Assert.h"
+
 u8 CBAlgoAvg_u8(u8 *arr, i32 size) {
   return CastTo(CBAlgoAccumulate(arr, size) / size, u8);
 }
@@ -13,6 +15,8 @@ i32 CBAlgoAvg_i32(i32 *arr, i32 size) {
 }
 
 u32 CBAlgoAccumulate_u8(u8 *arr, i32 size) {
+  CBAssert(arr != nil, nil);
+
   i32 i = 0;
   u32 acc = 0;
   while (i < size) {
@@ -24,6 +28,8 @@ u32 CBAlgoAccumulate_u8(u8 *arr, i32 size) {
 }
 
 u64 CBAlgoAccumulate_u32(u32 *arr, i32 size) {
+  CBAssert(arr != nil, nil);
+
   i32 i = 0;
   u64 acc = 0;
   while (i < size) {
@@ -35,6 +41,8 @@ u64 CBAlgoAccumulate_u32(u32 *arr, i32 size) {
 }
 
 i64 CBAlgoAccumulate_i32(i32 *arr, i32 size) {
+  CBAssert(arr != nil, nil);
+
   i32 i = 0;
   i64 acc = 0;
   while (i < size) {

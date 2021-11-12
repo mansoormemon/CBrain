@@ -6,6 +6,7 @@ set(PRIVATE_INCLUDES
 
 set(SOURCES
     "Algorithm.c"
+    "Assert.c"
     "Image.c"
     "ImgProc.c")
 
@@ -16,8 +17,16 @@ set(PRIVATE_SOURCES
 add_library("${CBRAIN}" "${SOURCES}" "${PRIVATE_INCLUDES}" "${PRIVATE_SOURCES}")
 
 target_include_directories("${CBRAIN}"
-    PUBLIC
-    "${PROJECT_SOURCE_DIR}/include"
-    "${PROJECT_SOURCE_DIR}/external")
+                           PUBLIC
+                           "${PROJECT_SOURCE_DIR}/include"
+                           "${PROJECT_SOURCE_DIR}/external")
 
 target_link_libraries("${CBRAIN}" "m")
+
+if(BUILD_SHARED_LIBS)
+    install(TARGETS "${CBRAIN}"
+            LIBRARY DESTINATION "lib/${CBRAIN}")
+else()
+    install(TARGETS "${CBRAIN}"
+            ARCHIVE DESTINATION "lib/${CBRAIN}")
+endif()

@@ -23,30 +23,30 @@ extern "C" {
 
 #include "Types.h"
 
-#define CBAlgoAvg(arr, size) _Generic((arr), \
-              u8 *: CBAlgoAvg_u8,            \
-              u32 *: CBAlgoAvg_u32,          \
-              i32 *: CBAlgoAvg_i32           \
-)(arr, size)
+#define CBAlgoAccumulate(arr, size) \
+  _Generic((arr),                   \
+  u8 *: CBAlgoAccumulate_u8,        \
+  u32 *: CBAlgoAccumulate_u32,      \
+  i32 *: CBAlgoAccumulate_i32)(arr, size)
 
-#define CBAlgoAccumulate(arr, size) _Generic((arr), \
-              u8 *: CBAlgoAccumulate_u8,            \
-              u32 *: CBAlgoAccumulate_u32,          \
-              i32 *: CBAlgoAccumulate_i32           \
-)(arr, size)
+#define CBAlgoAvg(arr, size) \
+  _Generic((arr),            \
+  u8 *: CBAlgoAvg_u8,        \
+  u32 *: CBAlgoAvg_u32,      \
+  i32 *: CBAlgoAvg_i32)(arr, size)
 
 #define CBAlgoRoundDown(x, factor) ((x) / (factor) * (factor))
 
 #define CBAlgoIsEven(x) ((x) % 2 == 0)
 #define CBAlgoIsOdd(x) ((x) % 2 == 1)
 
-u8 CBAlgoAvg_u8(u8 *arr, i32 size);
-u32 CBAlgoAvg_u32(u32 *arr, i32 size);
-i32 CBAlgoAvg_i32(i32 *arr, i32 size);
-
 u32 CBAlgoAccumulate_u8(u8 *arr, i32 size);
 u64 CBAlgoAccumulate_u32(u32 *arr, i32 size);
 i64 CBAlgoAccumulate_i32(i32 *arr, i32 size);
+
+u8 CBAlgoAvg_u8(u8 *arr, i32 size);
+u32 CBAlgoAvg_u32(u32 *arr, i32 size);
+i32 CBAlgoAvg_i32(i32 *arr, i32 size);
 
 #ifdef __cplusplus
 }

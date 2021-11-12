@@ -15,19 +15,25 @@
 
 // Copyright (c) 2021 Mansoor Memon <mansoorahmed.one@gmail.com>
 
-#ifndef CBRAIN__CBRAIN_H_
-#define CBRAIN__CBRAIN_H_
+#ifndef CBRAIN__ASSERT_H_
+#define CBRAIN__ASSERT_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "Algorithm.h"
-#include "Assert.h"
-#include "Image.h"
-#include "ImgProc.h"
 #include "Types.h"
-#include "Version.h"
+
+#include <stdarg.h>
+
+#define CBAssert(eval, ...) (CBAssert_M(eval, #eval, __LINE__, __FILE__, __func__, __VA_ARGS__))
+
+void CBAssert_M(bool eval,
+                const char *evalExpr,
+                i32 line,
+                const char *filename,
+                const char *func,
+                const char *fmt, ...);
 
 #ifdef __cplusplus
 }

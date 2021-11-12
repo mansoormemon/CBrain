@@ -62,7 +62,8 @@ typedef enum CBIPColorModel {
   CBIPCM_GRAY = 0x1,
   CBIPCM_GRAY_ALPHA = 0x2,
   CBIPCM_RGB = 0x4,
-  CBIPCM_RGBA = 0x8
+  CBIPCM_RGBA = 0x8,
+  CBIPCM_MAX__ = 0x10
 } CBIPColorModel;
 
 typedef enum CBIPTransformation {
@@ -70,7 +71,7 @@ typedef enum CBIPTransformation {
   CBIPT_RGB_TO_RED = 1,
   CBIPT_RGB_TO_GREEN = 2,
   CBIPT_RGB_TO_BLUE = 3,
-  CBIPT_MAX__
+  CBIPT_MAX__ = 4
 } CBIPTransformation;
 
 CBImage *CBImgProcCrop(CBImage *img, i32 startY, i32 startX, i32 width, i32 height);

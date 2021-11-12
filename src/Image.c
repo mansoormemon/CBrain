@@ -1,5 +1,7 @@
 #include "CBrain/Image.h"
 
+#include "CBrain/Assert.h"
+
 #include "Private/Image.h"
 #include "Private/Memory.h"
 
@@ -17,7 +19,6 @@
 #endif
 #include "stb/stb_image_write.h"
 
-#include <assert.h>
 #include <stdarg.h>
 #include <string.h>
 
@@ -26,33 +27,22 @@
 #endif
 
 CBImage *CBImageNew() {
-  CBImage *img = nil;
-
-  if (!CBreallocateMemory__(CastTo(&img, void *), sizeof(CBImage))) {
-    return nil;
-  }
-
-  CBsetMetaInfoImage__(img, 0, 0, 0);
-  img->data = nil;
-
-  return img;
+  return CBAllocate_Memory(sizeof(CBImage));
 }
 
-CBImage *CBImageNullify(CBImage *img) {
-  if (img == nil) { return nil; }
-
-  stbi_image_free(img->data);
-
-  CBsetMetaInfoImage__(img, 0, 0, 0);
-  img->data = nil;
+CBImage *CBImageReset(CBImage *img) {
+  if (img != nil) {
+    CBNullify_Image(img);
+    CBSet_Image(img, 0, 0, 0, nil);
+  }
 
   return img;
 }
 
 void CBImageDelete(CBImage **imgRef) {
   if (imgRef != nil) {
-    CBImageNullify(*imgRef);
-    CBfreeMemory__(CastTo(imgRef, void *));
+    CBImageReset(*imgRef);
+    CBFree_Memory(CastTo(imgRef, void **));
   }
 }
 
@@ -69,19 +59,16 @@ CBImage *CBImageFrom(i32 width, i32 height, i32 channels) {
   return img;
 }
 
-CBImage *CBImageFromInto(CBImage *img, i32 width, i32 height, i32 channels) {
-  if (img == nil || width <= 0 || height <= 0 || channels <= 0) { return nil; }
+CBImage *CBImageFromInto(CBImage *dest, i32 width, i32 height, i32 channels) {
+  if (dest == nil || width <= 0 || height <= 0 || channels <= 0) { return nil; }
 
-  i32 newBufSize = width * height * channels;
-  if (!CBreallocateMemory__(CastTo(&img->data, void *), newBufSize)) {
-    return nil;
-  }
+  u8 *tempBuf = CBAllocate_Memory(width * height * channels);
+  if (tempBuf == nil) { return nil; }
 
-  CBsetMetaInfoImage__(img, width, height, channels);
+  CBNullify_Image(dest);
+  CBSet_Image(dest, width, height, channels, tempBuf);
 
-  memset(img->data, 0, newBufSize);
-
-  return img;
+  return dest;
 }
 
 CBImage *CBImageClone(CBImage *src) {
@@ -101,11 +88,11 @@ CBImage *CBImageCloneInto(CBImage *dest, CBImage *src) {
   if (dest == nil || src == nil || dest == src) { return nil; }
 
   i32 bufSize = CBImageBufferSize(src);
-  if (!CBreallocateMemory__(CastTo(&dest->data, void *), bufSize)) {
-    return nil;
-  }
+  u8 *tempBuf = CBAllocate_Memory(bufSize);
+  if (tempBuf == nil) { return nil; }
 
-  CBsetMetaInfoImage__(dest, src->width, src->height, src->channels);
+  CBNullify_Image(dest);
+  CBSet_Image(dest, src->width, src->height, src->channels, tempBuf);
 
   memcpy(dest->data, src->data, bufSize);
 
@@ -138,24 +125,21 @@ CBImage *CBImageSubImageInto(CBImage *dest, CBImage *src, i32 startY, i32 startX
   i32 destWidth = endX - startX, destHeight = endY - startY, destChannels = src->channels;
   i32 destBufSize = destWidth * destHeight * destChannels;
 
-  u8 *tempBuf = nil;
-  if (!CBreallocateMemory__(CastTo(&tempBuf, void *), destBufSize)) {
-    return nil;
-  }
+  u8 *tempBuf = CBAllocate_Memory(destBufSize);
+  if (tempBuf == nil) { return nil; }
 
+  i32 destIndex = 0;
+  u8 *srcPtr = nil;
   i32 i = 0, y = startY;
   while (y < endY) {
-    i32 srcIndex = (y * src->width * src->channels) + (startX * src->channels);
-    i32 destIndex = i * destWidth * destChannels;
-    memcpy(tempBuf + destIndex, src->data + srcIndex, destWidth * destChannels);
+    srcPtr = CBImageGetPixAt(src, y, startX);
+    destIndex = i * destWidth * destChannels;
+    memcpy(tempBuf + destIndex, srcPtr, destWidth * destChannels);
     i += 1, y += 1;
   }
 
-  CBImageNullify(dest);
-
-  CBsetMetaInfoImage__(dest, destWidth, destHeight, destChannels);
-
-  dest->data = tempBuf;
+  CBNullify_Image(dest);
+  CBSet_Image(dest, destWidth, destHeight, destChannels, tempBuf);
 
   return dest;
 }
@@ -175,15 +159,11 @@ CBImage *CBImageReadInto(CBImage *img, const char *pathToImg) {
   if (img == nil) { return nil; }
 
   i32 width = 0, height = 0, channels = 0;
-  u8 *tempPtr = stbi_load(pathToImg, &width, &height, &channels, 0);
+  u8 *tempBuf = stbi_load(pathToImg, &width, &height, &channels, 0);
+  if (tempBuf == nil) { return nil; }
 
-  if (tempPtr == nil) { return nil; }
-
-  CBImageNullify(img);
-
-  CBsetMetaInfoImage__(img, width, height, channels);
-
-  img->data = tempPtr;
+  CBNullify_Image(img);
+  CBSet_Image(img, width, height, channels, tempBuf);
 
   return img;
 }
@@ -191,14 +171,12 @@ CBImage *CBImageReadInto(CBImage *img, const char *pathToImg) {
 bool CBImageWrite(CBImage *img, const char *pathToImg) {
   if (img == nil || pathToImg == nil) { return false; }
 
-  i32 retVal = stbi_write_jpg(pathToImg,
-                              img->width,
-                              img->height,
-                              img->channels,
-                              img->data,
-                              CB_JPEG_IMG_QUALITY);
-
-  return retVal;
+  return stbi_write_jpg(pathToImg,
+                        img->width,
+                        img->height,
+                        img->channels,
+                        img->data,
+                        CB_JPEG_IMG_QUALITY);
 }
 
 u8 *CBImageGetPixAt(CBImage *img, i32 y, i32 x) {
@@ -206,14 +184,23 @@ u8 *CBImageGetPixAt(CBImage *img, i32 y, i32 x) {
 
   if (img->data == nil || y >= img->height || x >= img->width) { return nil; }
 
-  i32 i = (x * img->channels) + (y * img->width * img->channels);
+  i32 i = (y * img->width * img->channels) + (x * img->channels);
 
   return img->data + i;
 }
 
 void CBImageSetPixAt(CBImage *img, i32 y, i32 x, ...) {
+  CBAssert(img != nil, nil);
+
   u8 *pix = CBImageGetPixAt(img, y, x);
-  assert(pix != nil);
+
+  CBAssert(pix != nil,
+           "Index out of bounds!\n"
+           "=> `y(=%d)` >= `img->width(=%d)` || `x(=%d)` > `img->width(=%d)` is true.",
+           y,
+           img->width,
+           x,
+           img->height);
 
   va_list args = {};
   va_start(args, x);
@@ -226,19 +213,45 @@ void CBImageSetPixAt(CBImage *img, i32 y, i32 x, ...) {
 }
 
 u8 CBImageGetPixChanAt(CBImage *img, i32 y, i32 x, i32 chan) {
+  CBAssert(img != nil, nil);
+
   u8 *pix = CBImageGetPixAt(img, y, x);
 
-  assert(pix != nil);
-  assert(chan < img->channels);
+  CBAssert(pix != nil,
+           "Index out of bounds!\n"
+           "=> `y(=%d)` >= `img->width(=%d)` || `x(=%d)` > `img->width(=%d)` is true.",
+           y,
+           img->width,
+           x,
+           img->height);
+
+  CBAssert(chan < img->channels,
+           "Index out of bounds!\n"
+           "=> `chan(=%d)` >= `img->channels(=%d)` is true.",
+           chan,
+           img->channels);
 
   return pix[chan];
 }
 
 void CBImageSetPixChanAt(CBImage *img, i32 y, i32 x, i32 chan, u8 val) {
+  CBAssert(img != nil, nil);
+
   u8 *pix = CBImageGetPixAt(img, y, x);
 
-  assert(pix != nil);
-  assert(chan < img->channels);
+  CBAssert(pix != nil,
+           "Index out of bounds!\n"
+           "=> `y(=%d)` >= `img->width(=%d)` || `x(=%d)` > `img->width(=%d)` is true.",
+           y,
+           img->width,
+           x,
+           img->height);
+
+  CBAssert(chan < img->channels,
+           "Index out of bounds!\n"
+           "=> `chan(=%d)` >= `img->channels(=%d)` is true.",
+           chan,
+           img->channels);
 
   pix[chan] = val;
 }
@@ -261,5 +274,5 @@ i32 CBImagePixCount(CBImage *img) {
 i32 CBImageBufferSize(CBImage *img) {
   if (img == nil) { return -1; }
 
-  return img->width * img->height * img->channels;
+  return CBImagePixCount(img) * img->channels;
 }

@@ -17,10 +17,10 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 project(CBrain
-    VERSION 0.0.1
-    DESCRIPTION "A library for working with neural networks."
-    HOMEPAGE_URL "https://github.com/mansoormemon/CBrain"
-    LANGUAGES C)
+        VERSION 0.0.1
+        DESCRIPTION "A library for working with neural networks."
+        HOMEPAGE_URL "https://github.com/mansoormemon/CBrain"
+        LANGUAGES C)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -35,9 +35,19 @@ endif()
 set(CBRAIN "cbrain")
 set(CBRAIN_DIR "CBrain")
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    option(CBRAIN_BUILD_EXAMPLES "Build examples" ON)
+else()
+    option(CBRAIN_BUILD_EXAMPLES "Build examples" OFF)
+endif()
+
 add_subdirectory("include")
 add_subdirectory("src")
-add_subdirectory("examples")
+
+if(CBRAIN_BUILD_EXAMPLES)
+    add_subdirectory("examples")
+endif()
+
 add_subdirectory("external")
 
 message("
@@ -52,5 +62,7 @@ BUILD_TYPE:     ${CMAKE_BUILD_TYPE}
 INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}
 COMPILER:       ${CMAKE_C_COMPILER_ID}
 MAKE_PROGRAM:   ${CMAKE_MAKE_PROGRAM}
+---
+CBRAIN_BUILD_EXAMPLES: ${CBRAIN_BUILD_EXAMPLES}
 --------------------------------
 ")

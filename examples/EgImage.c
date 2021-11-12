@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
   printf("Width: %d, Height: %d, Channels: %d\n", img->width, img->height, img->channels);
 
   printf("Extracting sub-image...\n");
-  CBImage *sub = CBImageSubImage(img, 24, 24, 72, 96);
+  CBImage *sub = CBImageSubImage(img, 0, 0, img->width / 2, img->height / 2);
 
   if (sub == nil) {
     printf("Error: Failed to extract sub-image!\n");

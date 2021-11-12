@@ -33,11 +33,11 @@ typedef struct CBImage {
 
 CBImage *CBImageNew();
 
-CBImage *CBImageNullify(CBImage *img);
+CBImage *CBImageReset(CBImage *img);
 void CBImageDelete(CBImage **imgRef);
 
 CBImage *CBImageFrom(i32 width, i32 height, i32 channels);
-CBImage *CBImageFromInto(CBImage *img, i32 width, i32 height, i32 channels);
+CBImage *CBImageFromInto(CBImage *dest, i32 width, i32 height, i32 channels);
 
 CBImage *CBImageClone(CBImage *src);
 CBImage *CBImageCloneInto(CBImage *dest, CBImage *src);

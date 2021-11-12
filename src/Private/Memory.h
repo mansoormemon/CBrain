@@ -23,8 +23,9 @@ extern "C" {
 
 #include "CBrain/Types.h"
 
-bool CBreallocateMemory__(void **tgtPtr, u64 size);
-void CBfreeMemory__(void **tgtPtr);
+void *CBAllocate_Memory(u64 size);
+bool CBReallocate_Memory(void **tgtPtr, u64 size);
+void CBFree_Memory(void **tgtPtr);
 
 #ifdef __cplusplus
 }

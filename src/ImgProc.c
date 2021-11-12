@@ -10,8 +10,6 @@
 #endif
 #include "stb/stb_image_resize.h"
 
-#include <assert.h>
-
 CBImage *CBImgProcCrop(CBImage *img, i32 startY, i32 startX, i32 width, i32 height) {
   return CBImageSubImageInto(img, img, startY, startX, width, height);
 }
@@ -22,10 +20,8 @@ bool CBImgProcResize(CBImage *img, i32 oWidth, i32 oHeight) {
   i32 channels = img->channels;
 
   i32 newBufSize = oWidth * oHeight * channels;
-  u8 *tempBuf = nil;
-  if (!CBreallocateMemory__(CastTo(&tempBuf, void *), newBufSize)) {
-    return nil;
-  }
+  u8 *tempBuf = CBAllocate_Memory(newBufSize);
+  if (tempBuf == nil) { return false; }
 
   i32 retVal = stbir_resize(img->data,
                             img->width,
@@ -36,7 +32,7 @@ bool CBImgProcResize(CBImage *img, i32 oWidth, i32 oHeight) {
                             oHeight,
                             0,
                             STBIR_TYPE_UINT8,
-                            img->channels,
+                            channels,
                             STBIR_ALPHA_CHANNEL_NONE,
                             0,
                             STBIR_EDGE_CLAMP,
@@ -49,12 +45,10 @@ bool CBImgProcResize(CBImage *img, i32 oWidth, i32 oHeight) {
 
   if (retVal == 0) { return false; }
 
-  CBImageNullify(img);
+  CBNullify_Image(img);
+  CBSet_Image(img, oWidth, oHeight, channels, tempBuf);
 
-  CBsetMetaInfoImage__(img, oWidth, oHeight, channels);
-  img->data = tempBuf;
-
-  return retVal;
+  return true;
 }
 
 bool CBImgProcRescale(CBImage *img, f32 factor) {
@@ -65,7 +59,7 @@ bool CBImgProcRescale(CBImage *img, f32 factor) {
 }
 
 bool CBImgProcIsCompatible(CBImage *img, CBIPColorModel model) {
-  if (img == nil || CastTo(model, i32) < 0) { return false; }
+  if (img == nil || CastTo(model, i32) < 0 || CastTo(model, i32) >= CBIPCM_MAX__) { return false; }
 
   switch (img->channels) {
     case 1: {
@@ -97,11 +91,9 @@ CBImage *CBImgProcTransform(CBImage *img, CBIPTransformation transformation) {
   i32 width = img->width, height = img->height;
 
   i32 bufSize = img->width * img->height;
-  u8 *tempBuf = nil;
+  u8 *tempBuf = CBAllocate_Memory(bufSize);
 
-  if (!CBreallocateMemory__(CastTo(&tempBuf, void *), bufSize)) {
-    return nil;
-  }
+  if (tempBuf == nil) { return nil; }
 
   const i8 R = 0, G = 1, B = 2;
 
@@ -133,10 +125,8 @@ CBImage *CBImgProcTransform(CBImage *img, CBIPTransformation transformation) {
     }
   }
 
-  CBImageNullify(img);
-
-  CBsetMetaInfoImage__(img, width, height, O_CHANNELS);
-  img->data = tempBuf;
+  CBNullify_Image(img);
+  CBSet_Image(img, width, height, O_CHANNELS, tempBuf);
 
   return img;
 }
@@ -231,26 +221,22 @@ CBImage *CBImgProcConv2D(CBImage *img, const f32 *kernel, i32 kernelWidth, i32 k
 
   if (!CBImgProcIsCompatible(img, CBIPCM_GRAY)) { return nil; }
 
-  assert(CBAlgoIsOdd(kernelWidth));
-  assert(CBAlgoIsOdd(kernelHeight));
+  if (!CBAlgoIsOdd(kernelWidth) || !CBAlgoIsOdd(kernelHeight)) { return nil; }
 
-  u8 *tempBuf = nil;
-  i32 width = img->width, height = img->height, channels = img->channels;
-  i32 bufSize = CBImageBufferSize(img);
+  const i32 O_CHANNELS = 1;
+  i32 bufSize = img->width * img->height;
+  u8 *tempBuf = CBAllocate_Memory(bufSize);
 
-  if (!CBreallocateMemory__(CastTo(&tempBuf, void *), bufSize)) {
-    return nil;
-  }
-
-  memset(tempBuf, 0, bufSize);
+  if (tempBuf == nil) { return nil; }
 
   i32 dispX = kernelWidth / 2;
   i32 dispY = kernelHeight / 2;
 
   i32 y = 0, x = 0;
+
   for (y = dispY; y < img->height - dispY; y += 1) {
     for (x = dispX; x < img->width - dispX; x += 1) {
-      i32 index = (y * width * channels) + (x * channels);
+      i32 index = (y * img->width) + x;
       i32 i = 0;
       i32 r = 0, c = 0;
       f32 acc = 0;
@@ -265,10 +251,8 @@ CBImage *CBImgProcConv2D(CBImage *img, const f32 *kernel, i32 kernelWidth, i32 k
     }
   }
 
-  CBImageNullify(img);
-
-  CBsetMetaInfoImage__(img, width, height, channels);
-  img->data = tempBuf;
+  CBNullify_Image(img);
+  CBSet_Image(img, img->width, img->height, O_CHANNELS, tempBuf);
 
   return img;
 }
