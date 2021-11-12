@@ -5,7 +5,9 @@ set(PRIVATE_INCLUDES
     "Private/Memory.h")
 
 set(SOURCES
-    "Image.c")
+    "Algorithm.c"
+    "Image.c"
+    "ImgProc.c")
 
 set(PRIVATE_SOURCES
     "Private/Image.c"

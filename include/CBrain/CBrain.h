@@ -22,7 +22,9 @@
 extern "C" {
 #endif
 
+#include "Algorithm.h"
 #include "Image.h"
+#include "ImgProc.h"
 #include "Types.h"
 #include "Version.h"
 
