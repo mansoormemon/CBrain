@@ -1,6 +1,7 @@
 set(EXAMPLES
     "EgImage.c"
-    "EgImgProc.c")
+    "EgImgProc.c"
+    "EgTensor.c")
 
 foreach(EXAMPLE ${EXAMPLES})
     get_filename_component(EX_TARGET "${EXAMPLE}" NAME_WE)

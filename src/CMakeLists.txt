@@ -2,17 +2,20 @@ option(BUILD_SHARED_LIBS "Build shared/dynamic library." OFF)
 
 set(PRIVATE_INCLUDES
     "Private/Image.h"
-    "Private/Memory.h")
+    "Private/Memory.h"
+    "Private/Tensor.h")
 
 set(SOURCES
     "Algorithm.c"
     "Assert.c"
     "Image.c"
-    "ImgProc.c")
+    "ImgProc.c"
+    "Tensor.c")
 
 set(PRIVATE_SOURCES
     "Private/Image.c"
-    "Private/Memory.c")
+    "Private/Memory.c"
+    "Private/Tensor.c")
 
 add_library("${CBRAIN}" "${SOURCES}" "${PRIVATE_INCLUDES}" "${PRIVATE_SOURCES}")
 

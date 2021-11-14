@@ -1,5 +1,4 @@
 // Copyright 2021 CBrain
-// Project URL: https://github.com/mansoormemon/CBrain
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +14,31 @@
 
 // Copyright (c) 2021 Mansoor Memon <mansoorahmed.one@gmail.com>
 
-#ifndef CBRAIN__CBRAIN_H_
-#define CBRAIN__CBRAIN_H_
+#ifndef CBRAIN__PRIVATE__TENSOR_H_
+#define CBRAIN__PRIVATE__TENSOR_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "Algorithm.h"
-#include "Assert.h"
-#include "Image.h"
-#include "ImgProc.h"
-#include "Tensor.h"
-#include "Types.h"
-#include "Version.h"
+#include "CBrain/Tensor.h"
+#include "CBrain/Types.h"
+
+#include <stdarg.h>
+
+CBTensor *CBFromDimsIntoV_Tensor(CBTensor *dest, i32 size, i32 dims, va_list list);
+
+bool CBSet_Tensor(CBTensor *tensor, i32 size, i32 dims, i32 *shape, void *data);
+
+i32 *CBGetShapeV_Tensor(i32 dims, va_list list);
+
+bool CBSetShape_Tensor(CBTensor *tensor, i32 dims, i32 *shape);
+
+CBTensor *CBNullify_Tensor(CBTensor *tensor);
+
+bool CBIsIndexValidV_Tensor(CBTensor *tensor, va_list list);
+
+bool CBIsShapeCompatible_Tensor(CBTensor *tensor, i32 dims, i32 *shape);
 
 #ifdef __cplusplus
 }

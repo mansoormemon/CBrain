@@ -4,6 +4,7 @@ set(INCLUDES
     "CBrain/CBrain.h"
     "CBrain/Image.h"
     "CBrain/ImgProc.h"
+    "CBrain/Tensor.h"
     "CBrain/Types.h"
     "CBrain/Version.h")
 

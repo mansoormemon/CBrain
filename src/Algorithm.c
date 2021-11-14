@@ -52,3 +52,18 @@ i64 CBAlgoAccumulate_i32(i32 *arr, i32 size) {
 
   return acc;
 }
+
+i64 CBAlgoMultiply_i32(i32 *arr, i32 size) {
+  CBAssert(arr != nil, nil);
+
+  if (size == 0) { return 0; }
+
+  i64 product = 1;
+  i32 i = 0;
+  while (i < size) {
+    product *= arr[i];
+    i += 1;
+  }
+
+  return product;
+}
