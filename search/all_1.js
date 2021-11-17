@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['cbalgoaccumulate_2',['CBAlgoAccumulate',['../Algorithm_8h.html#a924925d4285353a2f283a2761cf52040',1,'Algorithm.h']]],
+  ['cbalgoaccumulate_5fu8_3',['CBAlgoAccumulate_u8',['../Algorithm_8h.html#aca3b8ecacb9d0bd7fe67ff7eecec0ebe',1,'Algorithm.h']]],
+  ['cbalgoavg_4',['CBAlgoAvg',['../Algorithm_8h.html#af4c1739f199c83ede3da45b34fb2e5ff',1,'Algorithm.h']]],
+  ['cbalgoiseven_5',['CBAlgoIsEven',['../Algorithm_8h.html#af738b6c5701b4c261bdc00ede4fe6261',1,'Algorithm.h']]],
+  ['cbalgoisodd_6',['CBAlgoIsOdd',['../Algorithm_8h.html#a5344fcfd298eb8c766ce6b9c6807ba78',1,'Algorithm.h']]],
+  ['cbalgomultiply_7',['CBAlgoMultiply',['../Algorithm_8h.html#aa6f2c9b11decc7e2d3c3a0dfa32ce5a8',1,'Algorithm.h']]],
+  ['cbalgorounddown_8',['CBAlgoRoundDown',['../Algorithm_8h.html#a75cb95f72cf31209d9963b70e7d91b7e',1,'Algorithm.h']]],
+  ['cbassert_5fm_9',['CBAssert_M',['../Assert_8h.html#abb4c940b7dc258a9fd92d1c8389ca4e9',1,'Assert.h']]],
+  ['cbimage_10',['CBImage',['../structCBImage.html',1,'']]],
+  ['cbimagedelete_11',['CBImageDelete',['../Image_8h.html#a5eb6b42c9fe981b73fb5f77cd202b9ec',1,'Image.h']]],
+  ['cbimagefrom_12',['CBImageFrom',['../Image_8h.html#a273d0e0a91ea9cc16bcc30f40d9b5190',1,'Image.h']]],
+  ['cbimagefrominto_13',['CBImageFromInto',['../Image_8h.html#af65ec2a0e5a2ffad95c97665d91cd884',1,'Image.h']]],
+  ['cbimagenew_14',['CBImageNew',['../Image_8h.html#a47fb05520163d9667aa0b5e89ca39fc1',1,'Image.h']]],
+  ['cbimagereset_15',['CBImageReset',['../Image_8h.html#a0e993dd054e8dc746705468350511db3',1,'Image.h']]],
+  ['cbipcolormodel_16',['CBIPColorModel',['../ImgProc_8h.html#ad81c8c3dfba45bd88159d7855ec13f03',1,'ImgProc.h']]],
+  ['cbrain_2eh_17',['CBrain.h',['../CBrain_8h.html',1,'']]],
+  ['cbtensor_18',['CBTensor',['../structCBTensor.html',1,'']]],
+  ['channels_19',['channels',['../structCBImage.html#a0ab9fde124e331373ba36a51938c0435',1,'CBImage']]]
+];
