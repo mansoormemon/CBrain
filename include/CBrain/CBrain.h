@@ -22,6 +22,14 @@
 extern "C" {
 #endif
 
+/**
+ * @file CBrain.h
+ *
+ * @brief Main header file that includes all the other header files.
+ *
+ * @since v0.0.1.
+ */
+
 #include "Algorithm.h"
 #include "Assert.h"
 #include "Image.h"

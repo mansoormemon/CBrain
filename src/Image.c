@@ -155,17 +155,17 @@ CBImage *CBImageRead(const char *pathToImg) {
   return img;
 }
 
-CBImage *CBImageReadInto(CBImage *img, const char *pathToImg) {
-  if (img == nil) { return nil; }
+CBImage *CBImageReadInto(CBImage *dest, const char *pathToImg) {
+  if (dest == nil) { return nil; }
 
   i32 width = 0, height = 0, channels = 0;
   u8 *tempBuf = stbi_load(pathToImg, &width, &height, &channels, 0);
   if (tempBuf == nil) { return nil; }
 
-  CBNullify_Image(img);
-  CBSet_Image(img, width, height, channels, tempBuf);
+  CBNullify_Image(dest);
+  CBSet_Image(dest, width, height, channels, tempBuf);
 
-  return img;
+  return dest;
 }
 
 bool CBImageWrite(CBImage *img, const char *pathToImg) {

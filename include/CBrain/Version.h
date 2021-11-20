@@ -22,13 +22,45 @@
 extern "C" {
 #endif
 
+/**
+ * @file Version.h
+ *
+ * @brief Contains version info of the library.
+ *
+ * @see
+ * `https://semver.org/`
+ *
+ * @since v0.0.1.
+ */
+
+/**
+ * @brief Library macro.
+ */
 #define CBRAIN
+
+/**
+ * @brief Library macro.
+ */
 #define __CBRAIN__
 
+/**
+ * @brief Library version.
+ */
 #define CBRAIN_VERSION 1
 
+/**
+ * @brief Library major version.
+ */
 #define CBRAIN_VERSION_MAJOR (CBRAIN_VERSION / 100000)
+
+/**
+ * @brief Library minor version.
+ */
 #define CBRAIN_VERSION_MINOR (CBRAIN_VERSION / 100 % 1000)
+
+/**
+ * @brief Library patch version.
+ */
 #define CBRAIN_VERSION_PATCH (CBRAIN_VERSION % 100)
 
 #ifdef __cplusplus

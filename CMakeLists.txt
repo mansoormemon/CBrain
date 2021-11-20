@@ -36,13 +36,28 @@ set(CBRAIN "cbrain")
 set(CBRAIN_DIR "CBrain")
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    option(CBRAIN_BUILD_DOCS "Build documentation" ON)
     option(CBRAIN_BUILD_EXAMPLES "Build examples" ON)
 else()
+    option(CBRAIN_BUILD_DOCS "Build documentation" OFF)
     option(CBRAIN_BUILD_EXAMPLES "Build examples" OFF)
 endif()
 
 add_subdirectory("include")
 add_subdirectory("src")
+
+if(CBRAIN_BUILD_DOCS)
+    find_package(Doxygen)
+
+    if(DOXYGEN_FOUND)
+        add_subdirectory("docs")
+    else()
+        message("
+NOTE: Doxygen not found - Cannot build the documentation.
+      However, You can safely continue with the build process.")
+        set(CBRAIN_BUILD_DOCS OFF)
+    endif()
+endif()
 
 if(CBRAIN_BUILD_EXAMPLES)
     add_subdirectory("examples")
@@ -64,5 +79,6 @@ COMPILER:       ${CMAKE_C_COMPILER_ID}
 MAKE_PROGRAM:   ${CMAKE_MAKE_PROGRAM}
 ---
 CBRAIN_BUILD_EXAMPLES: ${CBRAIN_BUILD_EXAMPLES}
+CBRAIN_BUILD_DOCS: ${CBRAIN_BUILD_DOCS}
 --------------------------------
 ")

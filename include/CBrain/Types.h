@@ -26,21 +26,72 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+/**
+ * @file Types.h
+ *
+ * @brief Contains typedefs and macros that (re)define types.
+ *
+ * @since v0.0.1.
+ */
+
+/**
+ * @brief Represent `NULL`.
+ */
 #define nil NULL
 
+/**
+ * @brief Macro for casting between data types.
+ */
 #define CastTo(target, type) ((type)(target))
 
+/**
+ * @brief Represents `unsigned char`.
+ */
 typedef uint8_t u8;
+
+/**
+ * @brief Represents `unsigned short`.
+ */
 typedef uint16_t u16;
+
+/**
+ * @brief Represents `unsigned int`.
+ */
 typedef uint32_t u32;
+
+/**
+ * @brief Represents `unsigned long`.
+ */
 typedef uint64_t u64;
 
+/**
+ * @brief Represents `char`.
+ */
 typedef int8_t i8;
+
+/**
+ * @brief Represents `short`.
+ */
 typedef int16_t i16;
+
+/**
+ * @brief Represents `int`.
+ */
 typedef int32_t i32;
+
+/**
+ * @brief Represents `long`.
+ */
 typedef int64_t i64;
 
+/**
+ * @brief Represents `float`.
+ */
 typedef float f32;
+
+/**
+ * @brief Represents `double`.
+ */
 typedef double f64;
 
 #ifdef __cplusplus

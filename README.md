@@ -7,6 +7,7 @@ A library for working with neural networks.
 ### Links
 
 - [Repository](https://github.com/mansoormemon/CBrain)
+- [Documentation](https://mansoormemon.github.io/CBrain)
 
 ## Author
 
@@ -24,6 +25,7 @@ Before moving on to the build process, ensure the following prerequisites:
 
 - [Git](https://git-scm.com/) (Optional)
 - [CMake](https://cmake.org/) (Required)
+- [Doxygen](https://www.doxygen.nl/index.html) (Optional)
 
 #### 1. Download sources
 
@@ -64,6 +66,11 @@ The following options are available for controlling the build process:
     - **Default:**
         - `ON` - when configured as a standalone project.
         - `OFF` - when configured as a dependency or a sub-project.
+    
+5. `CBRAIN_BUILD_DOCS` - tells `CMake` to build ***docs***.
+    - **Default:**
+      - `ON` - when configured as a standalone project.
+      - `OFF` - when configured as a dependency or a sub-project.
 
 These options can be configured as deemed fit.
 
