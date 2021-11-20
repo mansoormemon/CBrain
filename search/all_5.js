@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['tensor_2eh_24',['Tensor.h',['../Tensor_8h.html',1,'']]],
-  ['types_2eh_25',['Types.h',['../Types_8h.html',1,'']]]
+  ['height_86',['height',['../structCBImage.html#aaa7dc0c79fa3b98ddd9f9953e03098e2',1,'CBImage']]]
 ];

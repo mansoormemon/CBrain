@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['algorithm_2eh_0',['Algorithm.h',['../Algorithm_8h.html',1,'']]],
-  ['assert_2eh_1',['Assert.h',['../Assert_8h.html',1,'']]]
+  ['_5f_5fcbrain_5f_5f_0',['__CBRAIN__',['../Version_8h.html#a38d95148c8b91dd6d17f289e5516cc48',1,'Version.h']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['width_27',['width',['../structCBImage.html#abd4df021dc0b786399d7c137015a4c79',1,'CBImage']]]
+  ['nil_93',['nil',['../Types_8h.html#a7a7ca81d2a85873283b5ec82953b1b25',1,'Types.h']]]
 ];

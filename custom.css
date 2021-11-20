@@ -7,7 +7,7 @@ html {
 
     --separator-color: #afba50;
 
-    --page-foreground-color: #2a3c31;
+    --page-foreground-color: #405b4a;
 
     --tablehead-background: #ffe7b3;
 
@@ -43,7 +43,8 @@ html {
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -51,12 +52,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--blockquote-background);
+    background-color: var(--separator-color);
     border-radius: var(--border-radius-medium);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--separator-color);
+    background-color: #88913b;
 }
 
 img {
@@ -102,22 +103,18 @@ table.memberdecls * {
     background-color: #fff9d6;
 }
 
-div.directory {
-    border-bottom: none;
-}
-
-table.directory td.entry, table.directory td.desc {
+div.directory, table.directory td.entry, table.directory td.desc {
     padding: var(--spacing-medium);
     vertical-align: middle;
-    border-bottom: 1px solid var(--separator-color);
+    border: none;
 }
 
-.directory td.entry, .directory td.desc {
+table.directory tbody tr {
+    border: 1px solid var(--separator-color);
+}
+
+table.directory td.desc {
     border-left: 1px solid var(--separator-color);
-}
-
-.directory td.desc {
-    border-right: 1px solid var(--separator-color);
 }
 
 .levels {

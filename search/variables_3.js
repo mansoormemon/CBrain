@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['width_48',['width',['../structCBImage.html#abd4df021dc0b786399d7c137015a4c79',1,'CBImage']]]
+  ['shape_164',['shape',['../structCBTensor.html#a18ffd371b4b6d48bd3592d70e2bc1431',1,'CBTensor']]],
+  ['size_165',['size',['../structCBTensor.html#a2543a7e22a3327a5e8262696c97a2a5f',1,'CBTensor']]]
 ];

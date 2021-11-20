@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['castto_188',['CastTo',['../Types_8h.html#aca3367aa297290a07bac15a138fee6ed',1,'Types.h']]],
+  ['cb_5fimg_5fchannel_5fmax_189',['CB_IMG_CHANNEL_MAX',['../ImgProc_8h.html#a5bd32a5b13de5bba3638d516995932b8',1,'ImgProc.h']]],
+  ['cb_5fimg_5fchannel_5fmin_190',['CB_IMG_CHANNEL_MIN',['../ImgProc_8h.html#aba9b694621b65ca1d0eac33e10677a05',1,'ImgProc.h']]],
+  ['cb_5fimg_5fchannel_5fsize_191',['CB_IMG_CHANNEL_SIZE',['../ImgProc_8h.html#ab57b8dbc20b0467fb16219f0bfe5ee01',1,'ImgProc.h']]],
+  ['cbalgoaccumulate_192',['CBAlgoAccumulate',['../Algorithm_8h.html#a924925d4285353a2f283a2761cf52040',1,'Algorithm.h']]],
+  ['cbalgoavg_193',['CBAlgoAvg',['../Algorithm_8h.html#af4c1739f199c83ede3da45b34fb2e5ff',1,'Algorithm.h']]],
+  ['cbalgoiseven_194',['CBAlgoIsEven',['../Algorithm_8h.html#af738b6c5701b4c261bdc00ede4fe6261',1,'Algorithm.h']]],
+  ['cbalgoisodd_195',['CBAlgoIsOdd',['../Algorithm_8h.html#a5344fcfd298eb8c766ce6b9c6807ba78',1,'Algorithm.h']]],
+  ['cbalgomultiply_196',['CBAlgoMultiply',['../Algorithm_8h.html#aa6f2c9b11decc7e2d3c3a0dfa32ce5a8',1,'Algorithm.h']]],
+  ['cbalgorounddown_197',['CBAlgoRoundDown',['../Algorithm_8h.html#a75cb95f72cf31209d9963b70e7d91b7e',1,'Algorithm.h']]],
+  ['cbassert_198',['CBAssert',['../Assert_8h.html#a62bb1ad27fd9981fc70ed1573fb1c890',1,'Assert.h']]],
+  ['cbrain_199',['CBRAIN',['../Version_8h.html#af98e2ce11d008eab5a66b1860ea41866',1,'Version.h']]],
+  ['cbrain_5fversion_200',['CBRAIN_VERSION',['../Version_8h.html#ab69fad3fb5af4028226dc8c1766d2197',1,'Version.h']]],
+  ['cbrain_5fversion_5fmajor_201',['CBRAIN_VERSION_MAJOR',['../Version_8h.html#aa0b782856ce61c3722484a40397c052f',1,'Version.h']]],
+  ['cbrain_5fversion_5fminor_202',['CBRAIN_VERSION_MINOR',['../Version_8h.html#a15ab83546d1cf428c6b859881f1acc20',1,'Version.h']]],
+  ['cbrain_5fversion_5fpatch_203',['CBRAIN_VERSION_PATCH',['../Version_8h.html#a4a89c8a2be818848f316d77845d04a23',1,'Version.h']]],
+  ['cbtensorelemat_204',['CBTensorElemAt',['../Tensor_8h.html#a46a2fea60984acd46f9c7a17ee36df5e',1,'Tensor.h']]],
+  ['cbtensorfrom_205',['CBTensorFrom',['../Tensor_8h.html#a507a2e619cdd2e1dffcfee016a5b7015',1,'Tensor.h']]],
+  ['cbtensorfrominto_206',['CBTensorFromInto',['../Tensor_8h.html#a590cf5b94d9d25732688d1b3e3de5b96',1,'Tensor.h']]]
+];
