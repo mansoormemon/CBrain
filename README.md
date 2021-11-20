@@ -1,5 +1,11 @@
 ![](res/images/cover.png)
 
+<p align="center">
+   <a href="https://github.com/mansoormemon/CBrain/actions/workflows/Main.yml">
+      <img src="https://github.com/mansoormemon/CBrain/actions/workflows/Main.yml/badge.svg" alt="Build">
+   </a>
+</p>
+
 ## Overview
 
 A library for working with neural networks.
@@ -66,11 +72,11 @@ The following options are available for controlling the build process:
     - **Default:**
         - `ON` - when configured as a standalone project.
         - `OFF` - when configured as a dependency or a sub-project.
-    
+
 5. `CBRAIN_BUILD_DOCS` - tells `CMake` to build ***docs***.
     - **Default:**
-      - `ON` - when configured as a standalone project.
-      - `OFF` - when configured as a dependency or a sub-project.
+        - `ON` - when configured as a standalone project.
+        - `OFF` - when configured as a dependency or a sub-project.
 
 These options can be configured as deemed fit.
 
