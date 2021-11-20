@@ -133,3 +133,7 @@ table.directory td.desc {
 .iconfopen, .icondoc, .iconfclosed {
     display: none;
 }
+
+#gsb-build {
+    display: none;
+}
