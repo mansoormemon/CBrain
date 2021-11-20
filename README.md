@@ -1,7 +1,7 @@
 ![](res/images/cover.png)
 
 <p align="center">
-   <a href="https://github.com/mansoormemon/CBrain/actions/workflows/Main.yml">
+   <a href="https://github.com/mansoormemon/CBrain/actions/workflows/Main.yml" id="gsb-build">
       <img src="https://github.com/mansoormemon/CBrain/actions/workflows/Main.yml/badge.svg" alt="Build">
    </a>
 </p>
