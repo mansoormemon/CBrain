@@ -23,8 +23,34 @@ extern "C" {
 
 #include "CBrain/Types.h"
 
+/**
+ * @brief Allocates new memory.
+ *
+ * @param size memory (in bytes) to allocate.
+ * @return
+ * - pointer to allocated memory, `nil` in case of failure.
+ */
 void *CBAllocate_Memory(u64 size);
+
+/**
+ * @brief Reallocates memory for a given location.
+ *
+ * @param tgtPtr reference to target pointer.
+ * @param size new memory (in bytes) to reallocate.
+ * @return
+ * - pointer to reallocated memory, `nil` in case of failure.
+ *
+ * @note In case of failure, target pointer will remain unchanged.
+ */
 bool CBReallocate_Memory(void **tgtPtr, u64 size);
+
+/**
+ * @brief Frees memory.
+ *
+ * @param tgtPtr reference to target pointer.
+ *
+ * @note Upon successful completion, the target pointer is set to `nil`.
+ */
 void CBFree_Memory(void **tgtPtr);
 
 #ifdef __cplusplus

@@ -8,14 +8,19 @@
 CBTensor *CBFromDimsIntoV_Tensor(CBTensor *dest, i32 size, i32 dims, va_list list) {
   if (dest == nil || size <= 0 || dims <= 0 || list == nil) { return nil; }
 
+  // Get new shape of tensor.
   i32 *shape = CBGetShapeV_Tensor(dims, list);
   if (shape == nil) { return nil; }
 
+  // Allocate a new buffer instead of reallocating the old one to prevent loss in case of failure.
   i64 bufSize = CBAlgoMultiply(shape, dims) * size;
   void *tempBuf = CBAllocate_Memory(bufSize);
   if (tempBuf == nil) { return nil; }
 
+  // Free old buffers.
   CBNullify_Tensor(dest);
+
+  // Update metadata.
   CBSet_Tensor(dest, size, dims, shape, tempBuf);
 
   return dest;
@@ -35,8 +40,10 @@ bool CBSet_Tensor(CBTensor *tensor, i32 size, i32 dims, i32 *shape, void *data) 
 bool CBSetShape_Tensor(CBTensor *tensor, i32 dims, i32 *shape) {
   if (tensor == nil || dims < 0) { return false; }
 
+  // Free old buffer.
   CBFree_Memory(CastTo(&tensor->shape, void **));
 
+  // Update metadata.
   tensor->dims = dims;
   tensor->shape = shape;
 
@@ -46,10 +53,12 @@ bool CBSetShape_Tensor(CBTensor *tensor, i32 dims, i32 *shape) {
 i32 *CBGetShapeV_Tensor(i32 dims, va_list list) {
   if (dims <= 0 || list == nil) { return nil; }
 
+  // Allocate memory for integer array i.e. shape of tensor.
   i32 *shape = CBAllocate_Memory(dims * sizeof(i32));
 
   if (shape == nil) { return nil; }
 
+  // Set shape i.e. size of each dimension iteratively.
   i32 i = 0;
   while (i < dims) {
     shape[i] = va_arg(list, i32);
@@ -76,13 +85,16 @@ bool CBIsIndexValidV_Tensor(CBTensor *tensor, va_list list) {
   i32 i = 0;
   while (i < tensor->dims) {
     i32 index = va_arg(copy, i32);
-    if (index >= tensor->shape[i]) { return false; }
+    if (index < 0 || index >= tensor->shape[i]) { return false; }
     i += 1;
   }
   return true;
 }
 
 bool CBIsShapeCompatible_Tensor(CBTensor *tensor, i32 dims, i32 *shape) {
+  // Compatibility Criteria:
+  // Total elements in the tensor must remain the same.
+
   if (tensor == nil) { return false; }
 
   i32 tgtBufSize = CBAlgoMultiply(shape, dims);

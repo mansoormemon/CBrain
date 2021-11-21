@@ -6,6 +6,8 @@
 void *CBAllocate_Memory(u64 size) {
   void *ptr = nil;
   if (!CBReallocate_Memory(&ptr, size)) { return nil; }
+
+  // Initialize buffer with zeros.
   memset(ptr, 0, size);
   return ptr;
 }

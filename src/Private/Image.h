@@ -24,9 +24,38 @@ extern "C" {
 #include "CBrain/Image.h"
 #include "CBrain/Types.h"
 
+/**
+ * @brief Sets image metadata.
+ *
+ * @param img source image.
+ * @param width new width of image.
+ * @param height new height of image.
+ * @param channels new number of channels of image.
+ * @return
+ * - `true` on success, `false` otherwise.
+ */
 bool CBSetMetaInfo_Image(CBImage *img, i32 width, i32 height, i32 channels);
+
+/**
+ * @brief Mutator for `CBImage`.
+ *
+ * @param img source image.
+ * @param width new width of image.
+ * @param height new height of image.
+ * @param channels new number of channels of image.
+ * @param data pointer to new buffer.
+ * @return
+ * - `true` on success, `false` otherwise.
+ */
 bool CBSet_Image(CBImage *img, i32 width, i32 height, i32 channels, u8 *data);
 
+/**
+ * @brief Frees all memory buffers.
+ *
+ * @param img source image.
+ * @return
+ * - `img` on success, `nil` otherwise.
+ */
 CBImage *CBNullify_Image(CBImage *img);
 
 #ifdef __cplusplus

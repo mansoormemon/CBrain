@@ -35,6 +35,7 @@ CBTensor *CBTensorFromDims(i32 size, i32 dims, ...) {
   va_list list = {};
   va_start(list, dims);
   if (CBFromDimsIntoV_Tensor(tensor, size, dims, list) == nil) {
+    // Delete `tensor` in case of failure to prevent memory leaks.
     CBTensorDelete(&tensor);
     return nil;
   }
@@ -54,6 +55,7 @@ CBTensor *CBTensorFromDimsInto(CBTensor *dest, i32 size, i32 dims, ...) {
 
 bool CBTensorIsNull(CBTensor *tensor) {
   if (tensor == nil) { return true; }
+  // If tensor->shape is `nil`, `tensor->data` will always be `nil`.
   return tensor->shape == nil || tensor->data == nil;
 }
 
@@ -77,10 +79,14 @@ void *CBTensorAt(CBTensor *tensor, ...) {
   va_list list = {};
   va_start(list, tensor);
 
+  // Check if given index(es) are valid.
   if (!CBIsIndexValidV_Tensor(tensor, list)) { return nil; }
 
   i64 index = 0;
 
+  // Calculate linear index based on given index(es) for an n-dimensional tensor.
+  // This works by narrowing down the dimensions from higher to lower.
+  // This is derived from `(y * width) + x` which works for 2-dimensions only.
   i32 i = 1, higherDI = 0;
   while (i < tensor->dims) {
     higherDI = va_arg(list, i32);
@@ -98,6 +104,7 @@ void *CBTensorAt(CBTensor *tensor, ...) {
 CBTensor *CBTensorReshape(CBTensor *tensor, i32 dims, ...) {
   if (tensor == nil || dims <= 0) { return nil; }
 
+  // Convert variadic list to an integer array.
   va_list list = {};
   va_start(list, dims);
   i32 *shape = CBGetShapeV_Tensor(dims, list);
@@ -105,8 +112,9 @@ CBTensor *CBTensorReshape(CBTensor *tensor, i32 dims, ...) {
 
   if (shape == nil) { return nil; }
 
+  // Reshape only if new shape is compatible with the old one.
+  // i.e. the total number of elements remain the same.
   if (!CBIsShapeCompatible_Tensor(tensor, dims, shape)) { return nil; }
-
   CBSetShape_Tensor(tensor, dims, shape);
 
   return tensor;
