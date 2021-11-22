@@ -123,6 +123,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a37079f193b9ac159d62e73b6e8e30dab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCBTensor.html">CBTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Tensor_8h.html#a37079f193b9ac159d62e73b6e8e30dab">CBTensorFromDimsInto</a> (<a class="el" href="structCBTensor.html">CBTensor</a> *dest, <a class="el" href="Types_8h.html#a48d6cd8e4135fb2ff7e7f2dac84089ec">i32</a> size, <a class="el" href="Types_8h.html#a48d6cd8e4135fb2ff7e7f2dac84089ec">i32</a> dims,...)</td></tr>
 <tr class="memdesc:a37079f193b9ac159d62e73b6e8e30dab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recreates an existing <code><a class="el" href="structCBTensor.html" title="A generic n-dimensional tensor.">CBTensor</a></code> object from the given parameters.  <a href="Tensor_8h.html#a37079f193b9ac159d62e73b6e8e30dab">More...</a><br /></td></tr>
 <tr class="separator:a37079f193b9ac159d62e73b6e8e30dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ccc192fda741143c96c000d66314851"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCBTensor.html">CBTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Tensor_8h.html#a7ccc192fda741143c96c000d66314851">CBTensorClone</a> (<a class="el" href="structCBTensor.html">CBTensor</a> *src)</td></tr>
+<tr class="memdesc:a7ccc192fda741143c96c000d66314851"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <code><a class="el" href="structCBTensor.html" title="A generic n-dimensional tensor.">CBTensor</a></code> object by cloning the given tensor.  <a href="Tensor_8h.html#a7ccc192fda741143c96c000d66314851">More...</a><br /></td></tr>
+<tr class="separator:a7ccc192fda741143c96c000d66314851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a504ad57e06fc17762845a08351b5fc06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCBTensor.html">CBTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Tensor_8h.html#a504ad57e06fc17762845a08351b5fc06">CBTensorCloneInto</a> (<a class="el" href="structCBTensor.html">CBTensor</a> *dest, <a class="el" href="structCBTensor.html">CBTensor</a> *src)</td></tr>
+<tr class="memdesc:a504ad57e06fc17762845a08351b5fc06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recreates an existing <code><a class="el" href="structCBTensor.html" title="A generic n-dimensional tensor.">CBTensor</a></code> object by cloning the given tensor.  <a href="Tensor_8h.html#a504ad57e06fc17762845a08351b5fc06">More...</a><br /></td></tr>
+<tr class="separator:a504ad57e06fc17762845a08351b5fc06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98f924eaf0a1a69d3ce3370a73c7f0de"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Tensor_8h.html#a98f924eaf0a1a69d3ce3370a73c7f0de">CBTensorIsNull</a> (<a class="el" href="structCBTensor.html">CBTensor</a> *tensor)</td></tr>
 <tr class="memdesc:a98f924eaf0a1a69d3ce3370a73c7f0de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a tensor is <code>nil</code> or blank.  <a href="Tensor_8h.html#a98f924eaf0a1a69d3ce3370a73c7f0de">More...</a><br /></td></tr>
 <tr class="separator:a98f924eaf0a1a69d3ce3370a73c7f0de"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -459,6 +465,78 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a7ccc192fda741143c96c000d66314851"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ccc192fda741143c96c000d66314851">&#9670;&nbsp;</a></span>CBTensorClone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structCBTensor.html">CBTensor</a>* CBTensorClone </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structCBTensor.html">CBTensor</a> *&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new <code><a class="el" href="structCBTensor.html" title="A generic n-dimensional tensor.">CBTensor</a></code> object by cloning the given tensor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>the tensor to be cloned. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><ul>
+<li>a pointer to <code><a class="el" href="structCBTensor.html" title="A generic n-dimensional tensor.">CBTensor</a></code> object allocated on heap, <code>nil</code> on failure. </li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+<a id="a504ad57e06fc17762845a08351b5fc06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a504ad57e06fc17762845a08351b5fc06">&#9670;&nbsp;</a></span>CBTensorCloneInto()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structCBTensor.html">CBTensor</a>* CBTensorCloneInto </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structCBTensor.html">CBTensor</a> *&#160;</td>
+          <td class="paramname"><em>dest</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structCBTensor.html">CBTensor</a> *&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Recreates an existing <code><a class="el" href="structCBTensor.html" title="A generic n-dimensional tensor.">CBTensor</a></code> object by cloning the given tensor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dest</td><td>existing <code><a class="el" href="structCBTensor.html" title="A generic n-dimensional tensor.">CBTensor</a></code> object. </td></tr>
+    <tr><td class="paramname">src</td><td>the tensor to be cloned. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><ul>
+<li><code>dest</code> on success, <code>nil</code> otherwise.</li>
+</ul>
+</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>In case of failure, the inputted tensor i.e.<code>dest</code> will be left unaltered. </dd></dl>
+
+</div>
+</div>
 <a id="a98f924eaf0a1a69d3ce3370a73c7f0de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a98f924eaf0a1a69d3ce3370a73c7f0de">&#9670;&nbsp;</a></span>CBTensorIsNull()</h2>
 
@@ -654,13 +732,13 @@ Functions</h2></td></tr>
 </div>
 </div><!-- contents -->
 <div class="ttc" id="aTensor_8h_html_a507a2e619cdd2e1dffcfee016a5b7015"><div class="ttname"><a href="Tensor_8h.html#a507a2e619cdd2e1dffcfee016a5b7015">CBTensorFrom</a></div><div class="ttdeci">#define CBTensorFrom(type,...)</div><div class="ttdoc">Macro wrapper for CBTensorFromDims .</div><div class="ttdef"><b>Definition:</b> Tensor.h:55</div></div>
-<div class="ttc" id="aTensor_8h_html_ad7b968b0502b8aa522cbd3f9a6767c72"><div class="ttname"><a href="Tensor_8h.html#ad7b968b0502b8aa522cbd3f9a6767c72">CBTensorReshape</a></div><div class="ttdeci">CBTensor * CBTensorReshape(CBTensor *tensor, i32 dims,...)</div><div class="ttdoc">Reshape a given tensor based on the given parameters.</div><div class="ttdef"><b>Definition:</b> Tensor.c:104</div></div>
+<div class="ttc" id="aTensor_8h_html_ad7b968b0502b8aa522cbd3f9a6767c72"><div class="ttname"><a href="Tensor_8h.html#ad7b968b0502b8aa522cbd3f9a6767c72">CBTensorReshape</a></div><div class="ttdeci">CBTensor * CBTensorReshape(CBTensor *tensor, i32 dims,...)</div><div class="ttdoc">Reshape a given tensor based on the given parameters.</div><div class="ttdef"><b>Definition:</b> Tensor.c:150</div></div>
 <div class="ttc" id="aTypes_8h_html_a94dab5770726ccbef8c7d026cfbdf8e5"><div class="ttname"><a href="Types_8h.html#a94dab5770726ccbef8c7d026cfbdf8e5">f64</a></div><div class="ttdeci">double f64</div><div class="ttdoc">Represents double.</div><div class="ttdef"><b>Definition:</b> Types.h:95</div></div>
 <div class="ttc" id="astructCBTensor_html"><div class="ttname"><a href="structCBTensor.html">CBTensor</a></div><div class="ttdoc">A generic n-dimensional tensor.</div><div class="ttdef"><b>Definition:</b> Tensor.h:99</div></div>
 <div class="ttc" id="aTensor_8h_html_a46a2fea60984acd46f9c7a17ee36df5e"><div class="ttname"><a href="Tensor_8h.html#a46a2fea60984acd46f9c7a17ee36df5e">CBTensorElemAt</a></div><div class="ttdeci">#define CBTensorElemAt(tensor, type,...)</div><div class="ttdoc">Macro wrapper for CBTensorAt .</div><div class="ttdef"><b>Definition:</b> Tensor.h:88</div></div>
 <div class="ttc" id="aTypes_8h_html_a92c50087ca0e64fa93fc59402c55f8ca"><div class="ttname"><a href="Types_8h.html#a92c50087ca0e64fa93fc59402c55f8ca">u8</a></div><div class="ttdeci">uint8_t u8</div><div class="ttdoc">Represents unsigned char.</div><div class="ttdef"><b>Definition:</b> Types.h:50</div></div>
 <div class="ttc" id="aTensor_8h_html_a590cf5b94d9d25732688d1b3e3de5b96"><div class="ttname"><a href="Tensor_8h.html#a590cf5b94d9d25732688d1b3e3de5b96">CBTensorFromInto</a></div><div class="ttdeci">#define CBTensorFromInto(dest, type,...)</div><div class="ttdoc">Macro wrapper for CBTensorFromDimsInto .</div><div class="ttdef"><b>Definition:</b> Tensor.h:72</div></div>
-<div class="ttc" id="aTensor_8h_html_a38cc95dee7ae39965110d9608db6015b"><div class="ttname"><a href="Tensor_8h.html#a38cc95dee7ae39965110d9608db6015b">CBTensorNew</a></div><div class="ttdeci">CBTensor * CBTensorNew()</div><div class="ttdoc">Creates a new dynamic CBTensor object.</div><div class="ttdef"><b>Definition:</b> Tensor.c:10</div></div>
+<div class="ttc" id="aTensor_8h_html_a38cc95dee7ae39965110d9608db6015b"><div class="ttname"><a href="Tensor_8h.html#a38cc95dee7ae39965110d9608db6015b">CBTensorNew</a></div><div class="ttdeci">CBTensor * CBTensorNew()</div><div class="ttdoc">Creates a new dynamic CBTensor object.</div><div class="ttdef"><b>Definition:</b> Tensor.c:11</div></div>
 <div class="ttc" id="aTypes_8h_html_a48d6cd8e4135fb2ff7e7f2dac84089ec"><div class="ttname"><a href="Types_8h.html#a48d6cd8e4135fb2ff7e7f2dac84089ec">i32</a></div><div class="ttdeci">int32_t i32</div><div class="ttdoc">Represents int.</div><div class="ttdef"><b>Definition:</b> Types.h:80</div></div>
 <!-- HTML footer for doxygen 1.9.2-->
 <!-- start footer part -->
