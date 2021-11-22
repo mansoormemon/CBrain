@@ -52,6 +52,17 @@ int main() {
   CBTensorFromInto(tensor, f64, 1, 20);
   debug(tensor);
 
+  printf("Cloning tensor...\n");
+  CBTensor *clone = CBTensorClone(tensor);
+  debug(clone);
+  debug(tensor);
+
+  printf("Morphing clone...\n");
+  CBTensorFromInto(clone, i32, 2, 4, 4);
+  debug(clone);
+  debug(tensor);
+
+  CBTensorDelete(&clone);
   CBTensorDelete(&tensor);
   return 0;
 }

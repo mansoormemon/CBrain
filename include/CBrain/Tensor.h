@@ -178,6 +178,27 @@ CBTensor *CBTensorFromDims(i32 size, i32 dims, ...);
 CBTensor *CBTensorFromDimsInto(CBTensor *dest, i32 size, i32 dims, ...);
 
 /**
+ * @brief Creates a new `CBTensor` object by cloning the given tensor.
+ *
+ * @param src the tensor to be cloned.
+ * @return
+ * - a pointer to `CBTensor` object allocated on heap, `nil` on failure.
+ */
+CBTensor *CBTensorClone(CBTensor *src);
+
+/**
+ * @brief Recreates an existing `CBTensor` object by cloning the given tensor.
+ *
+ * @param dest existing `CBTensor` object.
+ * @param src the tensor to be cloned.
+ * @return
+ * - `dest` on success, `nil` otherwise.
+ *
+ * @note In case of failure, the inputted tensor i.e.`dest` will be left unaltered.
+ */
+CBTensor *CBTensorCloneInto(CBTensor *dest, CBTensor *src);
+
+/**
  * @brief Checks if a tensor is `nil` or blank.
  *
  * @param tensor the tensor that is to be checked.

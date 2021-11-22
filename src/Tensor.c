@@ -6,6 +6,7 @@
 #include "Private/Tensor.h"
 
 #include <stdarg.h>
+#include <string.h>
 
 CBTensor *CBTensorNew() {
   return CBAllocate_Memory(sizeof(CBTensor));
@@ -49,6 +50,51 @@ CBTensor *CBTensorFromDimsInto(CBTensor *dest, i32 size, i32 dims, ...) {
   va_start(list, dims);
   CBFromDimsIntoV_Tensor(dest, size, dims, list);
   va_end(list);
+
+  return dest;
+}
+
+CBTensor *CBTensorClone(CBTensor *src) {
+  if (src == nil) { return nil; }
+
+  CBTensor *tensor = CBTensorNew();
+
+  if (CBTensorCloneInto(tensor, src) == nil) {
+    // Delete `tensor` in case of failure to prevent memory leaks.
+    CBTensorDelete(&tensor);
+    return nil;
+  }
+
+  return tensor;
+}
+
+CBTensor *CBTensorCloneInto(CBTensor *dest, CBTensor *src) {
+  if (dest == nil || src == nil || dest == src) { return nil; }
+
+  // Allocate memory for new shape.
+  i32 shapeBufSize = src->dims * sizeof(i32);
+  i32 *shape = CBAllocate_Memory(shapeBufSize);
+  if (shape == nil) { return nil; }
+
+  // Allocate a new buffer instead of reallocating the old one to prevent loss in case of failure.
+  i64 bufSize = CBTensorBufferSize(src);
+  u8 *tempBuf = CBAllocate_Memory(bufSize);
+  if (tempBuf == nil) {
+    // Free shape in case of failure.
+    CBFree_Memory(CastTo(&shape, void **));
+    return nil;
+  }
+
+  // Free old buffer.
+  CBNullify_Tensor(dest);
+
+  // Update metadata.
+  CBSet_Tensor(dest, src->size, src->dims, shape, tempBuf);
+
+  // Copy shape from source to destination.
+  memcpy(dest->shape, src->shape, shapeBufSize);
+  // Copy buffer from source to destination.
+  memcpy(dest->data, src->data, bufSize);
 
   return dest;
 }

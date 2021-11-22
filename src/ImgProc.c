@@ -191,11 +191,11 @@ CBImage *CBImgProcBinarize(CBImage *img) {
   // Formula:
   //  𝜎B² = Wb * Wf (μb - μf)²
   // where:
-  //  𝜎B - Between Class Variance
-  //  Wb = Weight (background)
-  //  Wf = Weight (foreground)
-  //  μb = Mean (background)
-  //  μf = Mean (foreground)
+  //  𝜎B - Between Class Variance (BCV)
+  //  Wb - Weight (background)
+  //  Wf - Weight (foreground)
+  //  μb - Mean (background)
+  //  μf - Mean (foreground)
   //
   // The desired threshold corresponds to the maximum 𝜎B².
   //
