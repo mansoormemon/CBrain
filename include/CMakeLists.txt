@@ -1,9 +1,12 @@
 set(INCLUDES
+    "CBrain/ActFunc.h"
     "CBrain/Algorithm.h"
     "CBrain/Assert.h"
     "CBrain/CBrain.h"
     "CBrain/Image.h"
     "CBrain/ImgProc.h"
+    "CBrain/NeuralNet.h"
+    "CBrain/Layer.h"
     "CBrain/Tensor.h"
     "CBrain/Types.h"
     "CBrain/Version.h")

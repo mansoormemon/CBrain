@@ -32,6 +32,11 @@ extern "C" {
 */
 
 /**
+ * @brief Euler's constant.
+ */
+#define M_E 2.71828
+
+/**
  * @brief Generic macro for CBAlgoAccumulate_[data_type: u8, u32, i32]
  */
 #define CBAlgoAccumulate(arr, size) \
@@ -70,6 +75,16 @@ extern "C" {
  * @brief Checks if `x` is odd.
  */
 #define CBAlgoIsOdd(x) ((x) % 2 == 1)
+
+/**
+ * @brief Returns maximum.
+ */
+#define CBAlgoMax(x, y) ((x) > (y) ? (x) : (y))
+
+/**
+ * @brief Returns minimum.
+ */
+#define CBAlgoMin(x, y) ((x) < (y) ? (x) : (y))
 
 /**
  * @brief Accumulates all elements in the given array.
@@ -140,6 +155,23 @@ i32 CBAlgoAvg_i32(i32 *arr, i32 size);
  * - multiplied result.
  */
 i64 CBAlgoMultiply_i32(i32 *arr, i32 size);
+
+/**
+ * @brief Seeds the given seed for a random number generator.
+ *
+ * @param seed seed to be seeded.
+ */
+void CBAlgoSeedRandom(i32 seed);
+
+/**
+ * @brief Generates a random number in the given range inclusively.
+ *
+ * @param min minimum number.
+ * @param max maximum number.
+ * @return
+ * - Generated random number.
+ */
+f32 CBAlgoRandomBetween(f32 min, f32 max);
 
 #ifdef __cplusplus
 }

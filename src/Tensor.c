@@ -165,3 +165,61 @@ CBTensor *CBTensorReshape(CBTensor *tensor, i32 dims, ...) {
 
   return tensor;
 }
+
+CBTensor *CBTensorFromImage(CBImage *img, i32 dims, ...) {
+  if (img == nil) { return nil; }
+
+  CBTensor *tensor = CBTensorNew();
+  if (tensor == nil) { return nil; }
+
+  va_list list = {};
+  va_start(list, dims);
+  if (CBFromDimsIntoV_Tensor(tensor, sizeof(f32), dims, list) == nil) {
+    // Delete `tensor` in case of failure to prevent memory leaks.
+    CBTensorDelete(&tensor);
+    return nil;
+  }
+  va_end(list);
+
+  i32 bufSize = CBImagePixCount(img);
+
+  i32 i = 0;
+  while (i < bufSize) {
+    *CBTensorElemAt(tensor, f32, i, 0) = CastTo(*CBImageLinearAt(img, i), f32);
+    i += 1;
+  }
+
+  return tensor;
+}
+
+CBTensor *CBTensorFlatten(CBImage *img) {
+  return CBTensorFromImage(img, 2, CBImagePixCount(img), 1);
+}
+
+CBTensor *CBTensorMatMultiply(CBTensor *a, CBTensor *b) {
+
+  // a->shape[0] => r1
+  // a->shape[1] => c1
+  // b->shape[0] => r2
+  // b->shape[1] => c2
+
+  // Cols of first matrix must be equal to rows of second matrix.
+  if (a->shape[1] != b->shape[0]) { return nil; }
+
+  // Dimensions of new matrix will be (r1, c2).
+  CBTensor *product = CBTensorFromDims(a->size, 2, a->shape[0], b->shape[1]);
+
+  // c1 == r2
+  i32 commonIndex = a->shape[1];
+
+  for (i32 i = 0; i < a->shape[0]; i += 1) {
+    for (i32 j = 0; j < b->shape[1]; j += 1) {
+      for (i32 k = 0; k < commonIndex; k += 1) {
+        // i represents row, j represents column, k is an accumulator index.
+        *CBTensorElemAt(product, i32, i, j) += (*CBTensorElemAt(a, i32, i, k)) * (*CBTensorElemAt(b, i32, k, j));
+      }
+    }
+  }
+
+  return product;
+}

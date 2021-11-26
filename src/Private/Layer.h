@@ -1,5 +1,4 @@
 // Copyright 2021 CBrain
-// Project URL: https://github.com/mansoormemon/CBrain
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,31 +14,22 @@
 
 // Copyright (c) 2021 Mansoor Memon <mansoorahmed.one@gmail.com>
 
-#ifndef CBRAIN__CBRAIN_H_
-#define CBRAIN__CBRAIN_H_
+#ifndef CBRAIN__PRIVATE__LAYER_H_
+#define CBRAIN__PRIVATE__LAYER_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/**
- * @file CBrain.h
- *
- * @brief Main header file that includes all the other header files.
- *
- * @since v0.0.1.
- */
+#include "CBrain/Layer.h"
+#include "CBrain/Types.h"
 
-#include "ActFunc.h"
-#include "Algorithm.h"
-#include "Assert.h"
-#include "Image.h"
-#include "ImgProc.h"
-#include "Layer.h"
-#include "NeuralNet.h"
-#include "Tensor.h"
-#include "Types.h"
-#include "Version.h"
+bool CBSetMetaInfo_Layer(CBLayer *layer, i32 neurons, f32 bias, CBActFunc actFunc);
+
+bool CBInitializeWeights_Layer(CBLayer *layer, i32 previousLayerNeurons, i32 seed);
+
+CBLayer *CBNullify_Layer(CBLayer *layer);
+CBLayer *CBReset_Layer(CBLayer *layer);
 
 #ifdef __cplusplus
 }

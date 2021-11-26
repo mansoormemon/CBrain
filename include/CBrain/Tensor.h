@@ -22,6 +22,7 @@
 extern "C" {
 #endif
 
+#include "Image.h"
 #include "Types.h"
 
 /**
@@ -265,6 +266,26 @@ void *CBTensorAt(CBTensor *tensor, ...);
  * ```
  */
 CBTensor *CBTensorReshape(CBTensor *tensor, i32 dims, ...);
+
+/**
+ * @brief Converts an image to a tensor.
+ *
+ * @param img
+ * @param dims
+ * @param ...
+ * @return
+ */
+CBTensor *CBTensorFromImage(CBImage *img, i32 dims, ...);
+
+/**
+ * @brief Converts the given image to a tensor and flattens it to a 1D array.
+ *
+ * @param img
+ * @return
+ */
+CBTensor *CBTensorFlatten(CBImage *img);
+
+CBTensor *CBTensorMatMultiply(CBTensor *a, CBTensor *b);
 
 #ifdef __cplusplus
 }

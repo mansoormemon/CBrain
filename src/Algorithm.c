@@ -2,6 +2,8 @@
 
 #include "CBrain/Assert.h"
 
+#include <stdlib.h>
+
 u8 CBAlgoAvg_u8(u8 *arr, i32 size) {
   return CastTo(CBAlgoAccumulate(arr, size) / size, u8);
 }
@@ -66,4 +68,15 @@ i64 CBAlgoMultiply_i32(i32 *arr, i32 size) {
   }
 
   return product;
+}
+
+void CBAlgoSeedRandom(i32 seed) {
+  srand(seed);
+}
+
+f32 CBAlgoRandomBetween(f32 min, f32 max) {
+  // [0, 1.0]
+  f32 scale = (f32) rand() / RAND_MAX;
+  // [min, max]
+  return min + scale * (max - min);
 }
