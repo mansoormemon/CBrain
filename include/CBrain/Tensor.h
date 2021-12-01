@@ -280,11 +280,24 @@ CBTensor *CBTensorFromImage(CBImage *img, i32 dims, ...);
 /**
  * @brief Converts the given image to a tensor and flattens it to a 1D array.
  *
- * @param img
+ * @param img source image.
  * @return
+ * - a tensor of shape `(totalPixels, 1)`, `nil` on failure.
  */
 CBTensor *CBTensorFlatten(CBImage *img);
 
+/**
+ * @brief Perform matrix multiplication.
+ *
+ * @param a matrix a.
+ * @param b matrix b.
+ * @return
+ * - product of `a` and `b` as tensor, `nil` on failure.
+ *
+ * @note
+ * - `a->shape[1]` must be equal to `b->shape[0]`.
+ * - Tensors must be of rank 2.
+ */
 CBTensor *CBTensorMatMultiply(CBTensor *a, CBTensor *b);
 
 #ifdef __cplusplus

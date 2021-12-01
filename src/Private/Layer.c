@@ -47,7 +47,7 @@ bool CBInitializeWeights_Layer(CBLayer *layer, i32 previousLayerNeurons, i32 see
   i32 i = 0, j = 0;
   for (i = 0; i < layer->neurons; i += 1) {
     for (j = 0; j < previousLayerNeurons; j += 1) {
-      *CBTensorElemAt(layer->weights, f32, i, j) = CBAlgoRandomBetween(0.0F, 1.0F);
+      *CBTensorElemAt(layer->weights, f32, i, j) = CBAlgoRandomBetween(0.0F, 0.01F);
     }
   }
 
@@ -64,7 +64,6 @@ CBLayer *CBNullify_Layer(CBLayer *layer) {
 }
 
 CBLayer *CBReset_Layer(CBLayer *layer) {
-  // Todo: Refactor.
   if (layer != nil) {
     // Delete each consecutive layer recursively.
     // Base case: Last layer.

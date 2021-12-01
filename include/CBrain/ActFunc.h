@@ -22,6 +22,7 @@
 extern "C" {
 #endif
 
+#include "Tensor.h"
 #include "Types.h"
 
 /**
@@ -109,6 +110,14 @@ f32 CBActFuncLeakyReLU(f32 x);
  * - y
  */
 f32 CBActFuncELU(f32 x, f32 alpha);
+
+/**
+ * @brief Softmax function.
+ *
+ * @param tensor
+ * - target tensor.
+ */
+void CBActFuncSoftmax(CBTensor *tensor);
 
 /**
  * @brief Converts `actFunc` to string.

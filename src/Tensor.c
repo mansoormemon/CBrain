@@ -197,7 +197,6 @@ CBTensor *CBTensorFlatten(CBImage *img) {
 }
 
 CBTensor *CBTensorMatMultiply(CBTensor *a, CBTensor *b) {
-
   // a->shape[0] => r1
   // a->shape[1] => c1
   // b->shape[0] => r2
@@ -216,7 +215,7 @@ CBTensor *CBTensorMatMultiply(CBTensor *a, CBTensor *b) {
     for (i32 j = 0; j < b->shape[1]; j += 1) {
       for (i32 k = 0; k < commonIndex; k += 1) {
         // i represents row, j represents column, k is an accumulator index.
-        *CBTensorElemAt(product, i32, i, j) += (*CBTensorElemAt(a, i32, i, k)) * (*CBTensorElemAt(b, i32, k, j));
+        *CBTensorElemAt(product, f32, i, j) += (*CBTensorElemAt(a, f32, i, k)) * (*CBTensorElemAt(b, f32, k, j));
       }
     }
   }

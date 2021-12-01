@@ -89,54 +89,62 @@ CBLayer *CBNeuralNetAddLayer(CBNeuralNet *net, i32 neurons, f32 bias, CBActFunc 
   return layer;
 }
 
-CBTensor *CBNeuralNetPredict(CBNeuralNet *net, CBTensor *input) {
-  // Todo: Implement
+CBTensor *CBNeuralNetPredict(CBNeuralNet *net, CBTensor *input, bool softmax) {
   if (net == nil || input == nil) { return nil; }
 
   CBTensor *output = CBTensorClone(input);
 
   CBLayer *layer = CBNeuralNetBegin(net);
+
   while (layer != nil) {
+    // Multiply weights with input.
     CBTensor *temp = CBTensorMatMultiply(layer->weights, output);
     CBTensorDelete(&output);
     output = temp;
+
+    // Apply activation function.
     for (i32 i = 0; i < output->shape[0]; i += 1) {
       f32 *x = CBTensorElemAt(output, f32, i, 0);
       switch (layer->actFunc) {
         case CBLAF_Linear: {
-          *x = CBActFuncLinear(*x);
+          *x = CBActFuncLinear(*x + layer->bias);
           break;
         }
         case CBLAF_Sigmoid: {
-          *x = CBActFuncSigmoid(*x);
+          *x = CBActFuncSigmoid(*x + layer->bias);
           break;
         }
         case CBLAF_TanH: {
-          *x = CBActFuncTanH(*x);
+          *x = CBActFuncTanH(*x + layer->bias);
           break;
         }
         case CBLAF_ArcTan: {
-          *x = CBActFuncArcTan(*x);
+          *x = CBActFuncArcTan(*x + layer->bias);
           break;
         }
         case CBLAF_ReLU: {
-          *x = CBActFuncReLU(*x);
+          *x = CBActFuncReLU(*x + layer->bias);
           break;
         }
         case CBLAF_LeakyReLU: {
-          *x = CBActFuncLeakyReLU(*x);
+          *x = CBActFuncLeakyReLU(*x + layer->bias);
           break;
         }
         case CBLAF_ELU: {
-          *x = CBActFuncELU(*x, 1);
+          *x = CBActFuncELU(*x + layer->bias, 1);
           break;
         }
         default: {
+          *x = *x + layer->bias;
           break;
         }
       }
     }
     layer = layer->next;
+  }
+
+  if (softmax) {
+    CBActFuncSoftmax(output);
   }
 
   return output;
@@ -183,5 +191,4 @@ void CBNeuralNetSummary(CBNeuralNet *net) {
          "Optimizer: N/A\n");
 
   printf("=================================================================================================\n");
-
 }

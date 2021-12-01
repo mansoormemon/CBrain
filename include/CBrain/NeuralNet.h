@@ -174,7 +174,7 @@ CBLayer *CBNeuralNetAddLayer(CBNeuralNet *net, i32 neurons, f32 bias, CBActFunc 
  * @return
  * - Output layer on success, `nil` otherwise.
  */
-CBTensor *CBNeuralNetPredict(CBNeuralNet *net, CBTensor *input);
+CBTensor *CBNeuralNetPredict(CBNeuralNet *net, CBTensor *input, bool softmax);
 
 /**
  * @brief Prints network summary.

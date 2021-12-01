@@ -25,25 +25,30 @@ int main(int argc, char *argv[]) {
   }
   const char *in = argv[1];
 
+  printf("---\n"
+         "Input: %s\n"
+         "---\n", in);
+
+  printf("\n");
+
   CBTensor *input = preprocessData(in);
   i32 inputSize = CastTo(CBTensorTotal(input), i32);
 
   CBNeuralNet *model = CBNeuralNetFrom(inputSize);
 
-  CBNeuralNetAddLayer(model, 392, 0.3F, CBLAF_ArcTan, -1);
-  CBNeuralNetAddLayer(model, 56, 0.4F, CBLAF_Sigmoid, -2);
-  CBNeuralNetAddLayer(model, 28, 0.4F, CBLAF_ReLU, -3);
-  CBNeuralNetAddLayer(model, 10, 1.2F, CBLAF_ELU, -4);
+  CBNeuralNetAddLayer(model, 56, 0.0F, CBLAF_Linear, 2485);
+  CBNeuralNetAddLayer(model, 28, 0.0F, CBLAF_ELU, 6488);
+  CBNeuralNetAddLayer(model, 10, 0.0F, CBLAF_LeakyReLU, 588);
 
   CBNeuralNetSummary(model);
 
-  CBTensor *output = CBNeuralNetPredict(model, input);
+  printf("\n");
+
+  CBTensor *output = CBNeuralNetPredict(model, input, true);
 
   printf("---\n"
-         "Output:\n"
-         "---\n");
-
-  printf("shape = (%d, %d)\n", output->shape[0], output->shape[1]);
+         "Output: shape = (%d, %d)\n"
+         "---\n", output->shape[0], output->shape[1]);
 
   for (i32 i = 0; i < output->shape[0]; i += 1) {
     printf("[ class = %02d, strength = % g ]\n", i, *CBTensorElemAt(output, f32, i, 0));
