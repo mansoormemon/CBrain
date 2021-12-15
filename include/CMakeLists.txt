@@ -3,6 +3,7 @@ set(INCLUDES
     "CBrain/Algorithm.h"
     "CBrain/Assert.h"
     "CBrain/CBrain.h"
+    "CBrain/CostFunc.h"
     "CBrain/Image.h"
     "CBrain/ImgProc.h"
     "CBrain/NeuralNet.h"

@@ -33,6 +33,7 @@ extern "C" {
 #include "ActFunc.h"
 #include "Algorithm.h"
 #include "Assert.h"
+#include "CostFunc.h"
 #include "Image.h"
 #include "ImgProc.h"
 #include "Layer.h"

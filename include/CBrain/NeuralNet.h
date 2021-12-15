@@ -23,6 +23,7 @@ extern "C" {
 #endif
 
 #include "ActFunc.h"
+#include "CostFunc.h"
 #include "Layer.h"
 #include "Tensor.h"
 #include "Types.h"
@@ -182,6 +183,24 @@ CBTensor *CBNeuralNetPredict(CBNeuralNet *net, CBTensor *input, bool softmax);
  * @param net target network.
  */
 void CBNeuralNetSummary(CBNeuralNet *net);
+
+/**
+ * @brief Finds max of given tensor.
+ * @param tensor
+ * @return
+ */
+i32 CBFindMax(CBTensor *tensor);
+
+/**
+ * @brief Trains the model.
+ */
+void CBNeuralNetTrain(CBNeuralNet *net,
+                      f32 learningRate,
+                      i32 batchSize,
+                      CBCostFunc costFunc,
+                      i32 epochs,
+                      CBTensor *trainData,
+                      CBTensor *trainLabels);
 
 #ifdef __cplusplus
 }

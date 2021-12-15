@@ -11,6 +11,7 @@ set(SOURCES
     "ActFunc.c"
     "Algorithm.c"
     "Assert.c"
+    "CostFunc.c"
     "Image.c"
     "ImgProc.c"
     "NeuralNet.c"

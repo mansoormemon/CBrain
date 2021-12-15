@@ -187,8 +187,106 @@ void CBNeuralNetSummary(CBNeuralNet *net) {
     layer = layer->next;
   }
 
-  printf("Loss Function: N/A\n"
-         "Optimizer: N/A\n");
-
+  printf("Total Parameters: N/A\n");
   printf("=================================================================================================\n");
+}
+
+i32 CBFindMax(CBTensor *tensor) {
+  i32 index = -1;
+
+  f32 max = *CBTensorElemAt(tensor, f32, 0, 0);
+
+  for (i32 i = 1; i < tensor->shape[0]; i += 1) {
+    f32 val = *CBTensorElemAt(tensor, f32, i, 0);
+    if (val > max) {
+      max = val;
+      index = i;
+    }
+  }
+
+  return index;
+}
+
+void CBNeuralNetTrain(CBNeuralNet *net,
+                      f32 learningRate,
+                      i32 batchSize,
+                      CBCostFunc costFunc,
+                      i32 epochs,
+                      CBTensor *trainData,
+                      CBTensor *trainLabels) {
+  if (net == nil || trainData == nil || trainLabels == nil) { return; }
+
+  i32 totalBatches = trainData->shape[0] / batchSize;
+  printf("Batch Size: %d, Total Batches: %d, Dropped samples: %d\n",
+         batchSize,
+         totalBatches,
+         trainData->shape[0] - (batchSize * totalBatches));
+
+  // Shape of tensor.
+  i32 arr[] = {trainData->shape[1], 1};
+
+  CBTensor in = {};
+  in.dims = 2;
+  in.size = sizeof(f32);
+  in.shape = arr;
+
+  // epoch
+  for (i32 e = 0; e < epochs; e += 1) {
+    i32 index = 0;
+    printf("Epoch %d of %d:\n", e + 1, epochs);
+    // batch
+    for (i32 b = 0; b < totalBatches; b += 1) {
+      f32 costAcc = 0.0F;
+      i32 correct = 0;
+      // sample
+      for (i32 s = 0; s < batchSize; s += 1) {
+        in.data = CBTensorElemAt(trainData, f32, index, 0);
+
+        // Forward Pass
+        CBTensor *output = CBNeuralNetPredict(net, &in, true);
+        i32 oClass = CBFindMax(output);
+
+        // Fetch label/class for sample.
+        i32 eClass = *CBTensorElemAt(trainLabels, u8, index, 0);
+
+        // Increment counter for correct predictions.
+        correct += eClass == oClass;
+
+        // Generate one-hot true vector of probabilities i.e. expected class will
+        // have a probability of '1.0' whereas others will be '0.0'.
+        CBTensor *expected = CBTensorFrom(f32, 2, output->shape[0], output->shape[1]);
+        *CBTensorElemAt(expected, f32, eClass, 0) = 1;
+
+        // Calculate individual cost and accumulate result to find mean later on.
+        switch (costFunc) {
+          case CBCF_MeanSqError: {
+            costAcc += CBCostFuncSqError(output, expected);
+            break;
+          }
+          case CBCF_MeanCrossEntropy: {
+            costAcc += CBCostFuncCrossEntropy(output, expected);
+            break;
+          }
+          default: { break; }
+        }
+
+        CBTensorDelete(&expected);
+
+        index += 1;
+      }
+
+      // Calculate mean.
+      f32 meanCost = costAcc / batchSize;
+
+      // Accuracy (correct_guesses / total).
+      f32 accuracy = (f32) correct / batchSize;
+      printf("Batch # %d/%d => cost=%.4f, accuracy=%.4f (%d)\n",
+             b + 1,
+             totalBatches,
+             meanCost,
+             accuracy,
+             correct);
+    }
+
+  }
 }
