@@ -264,7 +264,8 @@ void CBNeuralNetTrain(CBNeuralNet *net,
             break;
           }
           case CBCF_MeanCrossEntropy: {
-            costAcc += CBCostFuncCrossEntropy(output, expected);
+            // Only pass the output probability of expected class.
+            costAcc += CBCostFuncCrossEntropy(*CBTensorElemAt(output, f32, oClass, 0));
             break;
           }
           default: { break; }
@@ -287,6 +288,8 @@ void CBNeuralNetTrain(CBNeuralNet *net,
              accuracy,
              correct);
     }
+
+    // Todo: Implement gradient descent
 
   }
 }

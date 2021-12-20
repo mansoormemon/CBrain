@@ -36,7 +36,7 @@ typedef enum CBCostFunction {
 
 f32 CBCostFuncSqError(CBTensor *output, CBTensor *expected);
 
-f32 CBCostFuncCrossEntropy(CBTensor *output, CBTensor *expected);
+f32 CBCostFuncCrossEntropy(f32 oProb);
 
 f32 CBCostFuncSqErrorD();
 

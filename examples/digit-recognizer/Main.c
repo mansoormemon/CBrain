@@ -159,13 +159,18 @@ int main(int argc, char *argv[]) {
 
   printf("\n");
 
-  CBTensor *trainData = readMNISTDataset(trainImagesPath, 1024);
-  CBTensor *trainLabels = readMNISTDatasetLabels(trainLabelsPath, 1024);
+  const i32 TRAINING_DATA_SIZE = 2048;
+  const i32 BATCH_SIZE = 512;
+  const i32 EPOCHS = 2;
+  const f32 LEARNING_RATE = 0.001F;
+
+  CBTensor *trainData = readMNISTDataset(trainImagesPath, TRAINING_DATA_SIZE);
+  CBTensor *trainLabels = readMNISTDatasetLabels(trainLabelsPath, TRAINING_DATA_SIZE);
 
   printf("Training...\n");
   clock_t begin = clock();
 
-  CBNeuralNetTrain(model, 0.001, 400, CBCF_MeanCrossEntropy, 3, trainData, trainLabels);
+  CBNeuralNetTrain(model, LEARNING_RATE, BATCH_SIZE, CBCF_MeanCrossEntropy, EPOCHS, trainData, trainLabels);
 
   clock_t end = clock();
   double time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
