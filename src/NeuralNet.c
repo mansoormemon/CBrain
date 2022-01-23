@@ -57,7 +57,7 @@ bool CBNeuralNetIsEmpty(CBNeuralNet *net) {
   return net->begin == nil;
 }
 
-CBLayer *CBNeuralNetAddLayer(CBNeuralNet *net, i32 neurons, f32 bias, CBActFunc actFunc, i32 seed) {
+CBLayer *CBNeuralNetAddLayer(CBNeuralNet *net, i32 neurons, CBActFunc actFunc, i32 seed) {
   if (net == nil || neurons < 0 || CastTo(actFunc, i32) < 0 || CastTo(actFunc, i32) >= CBLAF_MAX__) {
     return nil;
   }
@@ -65,7 +65,7 @@ CBLayer *CBNeuralNetAddLayer(CBNeuralNet *net, i32 neurons, f32 bias, CBActFunc 
   CBLayer *layer = CBLayerNew();
   if (layer == nil) { return nil; }
 
-  CBSetMetaInfo_Layer(layer, neurons, bias, actFunc);
+  CBSetMetaInfo_Layer(layer, neurons, actFunc);
 
   i32 prevNeurons = 0;
 
@@ -82,6 +82,11 @@ CBLayer *CBNeuralNetAddLayer(CBNeuralNet *net, i32 neurons, f32 bias, CBActFunc 
 
   // Initialize random weights based on given seed.
   if (!CBInitializeWeights_Layer(layer, prevNeurons, seed)) {
+    CBLayerDelete(&layer);
+    return nil;
+  }
+
+  if (!CBInitializeBiases_Layer(layer, seed)) {
     CBLayerDelete(&layer);
     return nil;
   }
@@ -105,37 +110,39 @@ CBTensor *CBNeuralNetPredict(CBNeuralNet *net, CBTensor *input, bool softmax) {
     // Apply activation function.
     for (i32 i = 0; i < output->shape[0]; i += 1) {
       f32 *x = CBTensorElemAt(output, f32, i, 0);
+      f32 *b = CBTensorElemAt(layer->biases, f32, i);
+
       switch (layer->actFunc) {
         case CBLAF_Linear: {
-          *x = CBActFuncLinear(*x + layer->bias);
+          *x = CBActFuncLinear(*x + *b);
           break;
         }
         case CBLAF_Sigmoid: {
-          *x = CBActFuncSigmoid(*x + layer->bias);
+          *x = CBActFuncSigmoid(*x + *b);
           break;
         }
         case CBLAF_TanH: {
-          *x = CBActFuncTanH(*x + layer->bias);
+          *x = CBActFuncTanH(*x + *b);
           break;
         }
         case CBLAF_ArcTan: {
-          *x = CBActFuncArcTan(*x + layer->bias);
+          *x = CBActFuncArcTan(*x + *b);
           break;
         }
         case CBLAF_ReLU: {
-          *x = CBActFuncReLU(*x + layer->bias);
+          *x = CBActFuncReLU(*x + *b);
           break;
         }
         case CBLAF_LeakyReLU: {
-          *x = CBActFuncLeakyReLU(*x + layer->bias);
+          *x = CBActFuncLeakyReLU(*x + *b);
           break;
         }
         case CBLAF_ELU: {
-          *x = CBActFuncELU(*x + layer->bias, 1);
+          *x = CBActFuncELU(*x + *b, 1);
           break;
         }
         default: {
-          *x = *x + layer->bias;
+          *x = *x + *b;
           break;
         }
       }
@@ -160,26 +167,25 @@ void CBNeuralNetSummary(CBNeuralNet *net) {
 
   printf(
       "=================================================================================================\n"
-      "%-10s%-20s%-15s%-12s%-25s%-15s\n"
+      "%-10s%-20s%-15s%-25s%-15s\n"
       "=================================================================================================\n",
-      "Layer", "No. Of Neurons", "Type", "Bias", "Activation Function", "Shape (Weights)");
+      "Layer", "No. Of Neurons", "Type", "Activation Function", "Shape (Weights)");
 
   i32 i = 0;
-  printf("PL_%-7d%-20d%-15s%-12c%-25c%-15c\n"
+  printf("PL_%-7d%-20d%-15s%-25c%-15c\n"
          "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n",
-         i, net->inputSize, "Input", '-', '-', '-');
+         i, net->inputSize, "Input", '-', '-');
 
   CBLayer *layer = net->begin;
 
   while (layer != nil) {
     i += 1;
     printf(
-        "L_%-8d%-20d%-15s%-12.4f%-25s(%dx%d)\n"
+        "L_%-8d%-20d%-15s%-25s(%dx%d)\n"
         "-------------------------------------------------------------------------------------------------\n",
         i,
         layer->neurons,
         "Dense",
-        layer->bias,
         CBActFuncToString(layer->actFunc),
         layer->weights->shape[0],
         layer->weights->shape[1]);
@@ -192,7 +198,7 @@ void CBNeuralNetSummary(CBNeuralNet *net) {
 }
 
 i32 CBFindMax(CBTensor *tensor) {
-  i32 index = -1;
+  i32 index = 0;
 
   f32 max = *CBTensorElemAt(tensor, f32, 0, 0);
 
@@ -263,9 +269,9 @@ void CBNeuralNetTrain(CBNeuralNet *net,
             costAcc += CBCostFuncSqError(output, expected);
             break;
           }
-          case CBCF_MeanCrossEntropy: {
+          case CBCF_MeanCatCrossEntropy: {
             // Only pass the output probability of expected class.
-            costAcc += CBCostFuncCrossEntropy(*CBTensorElemAt(output, f32, oClass, 0));
+            costAcc += CBCostFuncCategoricalCrossEntropy(output, expected);
             break;
           }
           default: { break; }
@@ -287,9 +293,10 @@ void CBNeuralNetTrain(CBNeuralNet *net,
              meanCost,
              accuracy,
              correct);
-    }
 
-    // Todo: Implement gradient descent
+      // Todo: Implement gradient descent
+      // here after mini-batch cost calculation.
 
-  }
-}
+    } // batches
+  } // epoch
+} // function

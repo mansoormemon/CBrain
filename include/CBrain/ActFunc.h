@@ -128,6 +128,20 @@ void CBActFuncSoftmax(CBTensor *tensor);
  */
 const char *CBActFuncToString(CBActFunc actFunc);
 
+f32 CBActFuncLinearD(f32 x);
+
+f32 CBActFuncSigmoidD(f32 x);
+
+f32 CBActFuncTanHD(f32 x);
+
+f32 CBActFuncArcTanD(f32 x);
+
+f32 CBActFuncReLUD(f32 x);
+
+f32 CBActFuncLeakyReLUD(f32 x);
+
+f32 CBActFuncELUD(f32 x, f32 alpha);
+
 #ifdef __cplusplus
 }
 #endif

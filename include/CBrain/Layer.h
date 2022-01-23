@@ -50,7 +50,7 @@ typedef struct CBLayer {
   /**
    * @brief bias of that layer.
    */
-  f32 bias;
+  CBTensor *biases;
 
   /**
    * @brief Activation function for neurons of that layer.

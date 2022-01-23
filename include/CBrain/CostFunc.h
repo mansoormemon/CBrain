@@ -30,17 +30,17 @@ extern "C" {
  */
 typedef enum CBCostFunction {
   CBCF_MeanSqError = 0,
-  CBCF_MeanCrossEntropy = 1,
+  CBCF_MeanCatCrossEntropy = 1,
   CBLF_MAX__
 } CBCostFunc;
 
 f32 CBCostFuncSqError(CBTensor *output, CBTensor *expected);
 
-f32 CBCostFuncCrossEntropy(f32 oProb);
+f32 CBCostFuncCategoricalCrossEntropy(CBTensor *output, CBTensor *expected);
 
-f32 CBCostFuncSqErrorD();
+f32 CBCostFuncSqErrorD(CBTensor *output, CBTensor *expected);
 
-f32 CBCostFuncCrossEntropyD();
+f32 CBCostFuncCategoricalCrossEntropyD(CBTensor *output, CBTensor *expected);
 
 #ifdef __cplusplus
 }

@@ -24,9 +24,10 @@ extern "C" {
 #include "CBrain/Layer.h"
 #include "CBrain/Types.h"
 
-bool CBSetMetaInfo_Layer(CBLayer *layer, i32 neurons, f32 bias, CBActFunc actFunc);
+bool CBSetMetaInfo_Layer(CBLayer *layer, i32 neurons, CBActFunc actFunc);
 
 bool CBInitializeWeights_Layer(CBLayer *layer, i32 previousLayerNeurons, i32 seed);
+bool CBInitializeBiases_Layer(CBLayer *layer, i32 seed);
 
 CBLayer *CBNullify_Layer(CBLayer *layer);
 CBLayer *CBReset_Layer(CBLayer *layer);

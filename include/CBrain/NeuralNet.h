@@ -159,13 +159,12 @@ bool CBNeuralNetIsEmpty(CBNeuralNet *net);
  *
  * @param net target network.
  * @param neurons number of neurons in the layer.
- * @param bias bias for the layer.
  * @param actFunc activation function that will be applied to all neurons of that layer.
  * @param seed seed for initializing random weights.
  * @return
  * - the layer appended to the neural network, `nil` on failure.
  */
-CBLayer *CBNeuralNetAddLayer(CBNeuralNet *net, i32 neurons, f32 bias, CBActFunc actFunc, i32 seed);
+CBLayer *CBNeuralNetAddLayer(CBNeuralNet *net, i32 neurons, CBActFunc actFunc, i32 seed);
 
 /**
  * @brief Makes predictions based on the given input data.

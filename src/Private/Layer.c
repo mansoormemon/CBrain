@@ -5,13 +5,12 @@
 #include "CBrain/Algorithm.h"
 #include "CBrain/Tensor.h"
 
-bool CBSetMetaInfo_Layer(CBLayer *layer, i32 neurons, f32 bias, CBActFunc actFunc) {
+bool CBSetMetaInfo_Layer(CBLayer *layer, i32 neurons, CBActFunc actFunc) {
   if (layer == nil || neurons < 0 || CastTo(actFunc, i32) < 0 || CastTo(actFunc, i32) >= CBLAF_MAX__) {
     return false;
   }
 
   layer->neurons = neurons;
-  layer->bias = bias;
   layer->actFunc = actFunc;
 
   return true;
@@ -47,8 +46,21 @@ bool CBInitializeWeights_Layer(CBLayer *layer, i32 previousLayerNeurons, i32 see
   i32 i = 0, j = 0;
   for (i = 0; i < layer->neurons; i += 1) {
     for (j = 0; j < previousLayerNeurons; j += 1) {
-      *CBTensorElemAt(layer->weights, f32, i, j) = CBAlgoRandomBetween(0.0F, 0.01F);
+      *CBTensorElemAt(layer->weights, f32, i, j) = CBAlgoRandomBetween(-0.1F, 0.1F);
     }
+  }
+
+  return true;
+}
+
+bool CBInitializeBiases_Layer(CBLayer *layer, i32 seed) {
+  layer->biases = CBTensorFrom(f32, 1, layer->neurons);
+  if (layer->biases == nil) {return false;}
+
+  CBAlgoSeedRandom(seed);
+  i32 i = 0;
+  for (i = 0; i < layer->neurons; i += 1) {
+    *CBTensorElemAt(layer->biases, f32, i) = CBAlgoRandomBetween(-0.1F, 0.1F);
   }
 
   return true;
@@ -58,6 +70,7 @@ CBLayer *CBNullify_Layer(CBLayer *layer) {
   // Delete weights tensor.
   if (layer != nil) {
     CBTensorDelete(&layer->weights);
+    CBTensorDelete(&layer->biases);
   }
 
   return layer;
@@ -71,7 +84,7 @@ CBLayer *CBReset_Layer(CBLayer *layer) {
     // Nullify layer after recursion ends.
     CBNullify_Layer(layer);
     // Reset all values.
-    CBSetMetaInfo_Layer(layer, 0, 0.0F, CBLAF_Linear);
+    CBSetMetaInfo_Layer(layer, 0, CBLAF_Linear);
   }
   return layer;
 }

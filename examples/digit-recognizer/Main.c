@@ -151,17 +151,17 @@ int main(int argc, char *argv[]) {
 
   CBNeuralNet *model = CBNeuralNetFrom(inputSize);
 
-  CBNeuralNetAddLayer(model, 56, 0.0F, CBLAF_Linear, 82);
-  CBNeuralNetAddLayer(model, 28, 0.0F, CBLAF_ELU, 6488);
-  CBNeuralNetAddLayer(model, 10, 0.0F, CBLAF_ArcTan, 748);
+  CBNeuralNetAddLayer(model, 56, CBLAF_Linear, 82);
+  CBNeuralNetAddLayer(model, 28, CBLAF_LeakyReLU, 6488);
+  CBNeuralNetAddLayer(model, 10, CBLAF_TanH, 748);
 
   CBNeuralNetSummary(model);
 
   printf("\n");
 
-  const i32 TRAINING_DATA_SIZE = 2048;
-  const i32 BATCH_SIZE = 512;
-  const i32 EPOCHS = 2;
+  const i32 TRAINING_DATA_SIZE = 1024;
+  const i32 BATCH_SIZE = 256;
+  const i32 EPOCHS = 1;
   const f32 LEARNING_RATE = 0.001F;
 
   CBTensor *trainData = readMNISTDataset(trainImagesPath, TRAINING_DATA_SIZE);
@@ -170,36 +170,36 @@ int main(int argc, char *argv[]) {
   printf("Training...\n");
   clock_t begin = clock();
 
-  CBNeuralNetTrain(model, LEARNING_RATE, BATCH_SIZE, CBCF_MeanCrossEntropy, EPOCHS, trainData, trainLabels);
+  CBNeuralNetTrain(model, LEARNING_RATE, BATCH_SIZE, CBCF_MeanCatCrossEntropy, EPOCHS, trainData, trainLabels);
 
   clock_t end = clock();
   double time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
 
   printf("Time taken: %.2lfs\n", time_spent);
 
-  // CBTensor *output = CBNeuralNetPredict(model, input, true);
-  //
-  // i32 oClass = CBFindMax(output);
-  // f32 strength = *CBTensorElemAt(output, f32, oClass, 0);
-  //
-  // printf("---\n"
-  //        "Output: shape = (%d, %d)\n"
-  //        "---\n", output->shape[0], output->shape[1]);
-  //
-  // for (i32 i = 0; i < output->shape[0]; i += 1) {
-  //   printf("[ class = %02d, strength = % .4f ]\n", i, *CBTensorElemAt(output, f32, i, 0));
-  // }
+  CBTensor *output = CBNeuralNetPredict(model, input, true);
 
-  // printf("---\n"
-  //        "Prediction: %d, Strength: %g (%.2f%%)\n"
-  //        "---\n", oClass, strength, strength * 100);
+  i32 oClass = CBFindMax(output);
+  f32 strength = *CBTensorElemAt(output, f32, oClass, 0);
+
+  printf("---\n"
+         "Output: shape = (%d, %d)\n"
+         "---\n", output->shape[0], output->shape[1]);
+
+  for (i32 i = 0; i < output->shape[0]; i += 1) {
+    printf("[ class = %02d, strength = % .4f ]\n", i, *CBTensorElemAt(output, f32, i, 0));
+  }
+
+  printf("---\n"
+         "Prediction: %d, Strength: %g (%.2f%%)\n"
+         "---\n", oClass, strength, strength * 100);
 
   CBTensorDelete(&trainData);
   CBTensorDelete(&trainLabels);
 
-  // CBTensorDelete(&output);
+  CBTensorDelete(&output);
 
-  // CBTensorDelete(&input);
+  CBTensorDelete(&input);
   CBNeuralNetDelete(&model);
 
   return 0;
